@@ -1,6 +1,10 @@
 #include "pch.h"
 
+#include "ICommand.h"
+#include "TestCmd.h"
+
 int main() {
-    std::string dstr = "Hello There!";
-    std::cout << dstr << std::endl;
+    TestCmd cmd("test");
+    ICommand& icmd = cmd;
+    icmd.executeCommand(0, nullptr);
 }
