@@ -8,7 +8,7 @@ public:
     ICommand(std::string name, std::string description);
     virtual ~ICommand() = default;
 
-    virtual void executeCommand(unsigned argsCount, char* args[]) = 0;
+    virtual void executeCommand(unsigned argsCount, std::string* args) = 0;
     const std::string& getCommandName() const;
     const std::string& getDescription() const;
     std::string getUsage() const;

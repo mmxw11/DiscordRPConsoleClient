@@ -10,5 +10,5 @@ public:
         addArgument("test", false);
         addArgument("test2", true);
     }
-    void executeCommand(unsigned argsCount, char* args[]) override;
+    void executeCommand(unsigned argsCount, std::string* args) override;
 };
