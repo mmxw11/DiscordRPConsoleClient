@@ -1,10 +1,17 @@
 #include "pch.h"
 
+#include "ApplicationManager.h"
 #include "ICommand.h"
 #include "TestCmd.h"
 
 int main() {
-    TestCmd cmd("test");
+    const char *args[] = { "test","test2" };
+    std::string args2[] = { "Hey", "Moi" };
+    std::string* args5 = args2;
+    std::cout << *(args5 + 1) << std::endl;
+
+    ApplicationManager appManager;
+    TestCmd cmd(appManager, "test");
     ICommand& icmd = cmd;
-    icmd.executeCommand(0, nullptr);
+    icmd.executeCommand(args2, 2);
 }
