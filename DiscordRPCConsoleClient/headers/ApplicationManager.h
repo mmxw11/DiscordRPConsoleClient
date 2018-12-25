@@ -6,6 +6,7 @@ class ApplicationManager {
 
 public:
     ApplicationManager();
+    void runApplication();
     CommandManager& getCommandManager();
 private:
     CommandManager commandManager;
