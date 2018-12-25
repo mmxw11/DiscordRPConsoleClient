@@ -11,6 +11,8 @@ class CommandManager {
 
 public:
     CommandManager(ApplicationManager& appManager);
+    CommandManager(const CommandManager&) = delete;
+    CommandManager& operator=(const CommandManager&) = delete;
     void dispatchCommand();
 private:
     ApplicationManager& appManager;

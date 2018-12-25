@@ -9,6 +9,8 @@ class ICommand {
 
 public:
     ICommand(ApplicationManager& appManager, std::string name, std::string description);
+    ICommand(const ICommand&) = delete;
+    ICommand& operator=(const ICommand&) = delete;
     virtual ~ICommand() = default;
 
     virtual void executeCommand(std::string* args, unsigned argsLength) = 0;
