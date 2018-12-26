@@ -1,6 +1,7 @@
 #pragma once 
 
 #include <string>
+#include <vector>
 
 namespace sutils {
 
@@ -9,4 +10,10 @@ namespace sutils {
     void toLowerCase(std::string& str);
 
     void toUpperCase(std::string& str);
+
+    /**
+     * Parse command line arguments and adds the to the vector.
+     * This is a modified version of https://stackoverflow.com/a/30518617/9816236
+     */
+    void parseCommandLineArgs(const std::string& line, std::vector<std::string>& argsStorage);
 }

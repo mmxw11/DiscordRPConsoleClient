@@ -14,6 +14,14 @@ bool CommandManager::dispatchCommand(std::string& commandInput) {
         appManager.shutdown();
         return true;
     }
-    //TODO: split args
+    std::cout << "Command args:" << std::endl;
+    std::vector<std::string> argsStorage;
+    sutils::parseCommandLineArgs(commandInput, argsStorage);
+
+    std::string* args = argsStorage.data();
+    for (size_t i = 0; i < argsStorage.size(); i++) {
+        std::cout << i << ". " << args[i] << std::endl;
+    }
+    //TODO
     return false;
 }
