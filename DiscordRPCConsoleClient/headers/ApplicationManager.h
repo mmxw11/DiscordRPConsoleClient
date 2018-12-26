@@ -9,7 +9,9 @@ public:
     ApplicationManager(const ApplicationManager&) = delete;
     ApplicationManager& operator=(const ApplicationManager&) = delete;
     void runApplication();
+    void shutdown();
     CommandManager& getCommandManager();
 private:
+    bool running;
     CommandManager commandManager;
 };

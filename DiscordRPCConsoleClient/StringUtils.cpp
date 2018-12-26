@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "StringUtils.h"
-#include <iostream>
 #include <algorithm>
 
 namespace sutils {
@@ -20,6 +19,7 @@ namespace sutils {
     void toLowerCase(std::string& str) {
         std::transform(str.begin(), str.end(), str.begin(), ::tolower);
     }
+
     void toUpperCase(std::string& str) {
         std::transform(str.begin(), str.end(), str.begin(), ::toupper);
     }

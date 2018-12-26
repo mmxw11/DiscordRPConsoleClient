@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 
-class ApplicationManager;
+class ApplicationManager; // forward declaration
 
 class ICommand {
 

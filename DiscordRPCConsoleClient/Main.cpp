@@ -8,7 +8,6 @@ int main() {
     //find discord instance
     //application id
     ApplicationManager appManager;
-    std::cout << "Command:" << std::endl;
     appManager.runApplication();
     std::cout << "Bye" << std::endl;
     /**
