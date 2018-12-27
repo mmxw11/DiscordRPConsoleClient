@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{2F6B1C81-5C7F-4E5A-A5B6-FFEC53E19593}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>DiscordRPCConsoleClient</RootNamespace>
+    <RootNamespace>DiscordRPConsoleClient</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
