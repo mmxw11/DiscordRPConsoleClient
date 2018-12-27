@@ -11,6 +11,7 @@ void ApplicationManager::runApplication() {
     if (running) {
         return;
     }
+    commandManager.registerCommands();
     this->running = true;
     while (running) {
         std::cout << "Command: ";

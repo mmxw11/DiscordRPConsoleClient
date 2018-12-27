@@ -7,7 +7,7 @@ int main() {
     //application id
 
     //TODO: 
-    // split register commands
+    // split register commands [DONE]
     // second constructor to command manager
     // remove testcmd and comments from command manager
     // rename project [DONE]

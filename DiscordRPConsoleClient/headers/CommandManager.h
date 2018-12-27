@@ -14,6 +14,7 @@ public:
     CommandManager(const CommandManager&) = delete;
     CommandManager& operator=(const CommandManager&) = delete;
     void registerCommand(std::unique_ptr<ICommand> command);
+    void registerCommands();
     bool dispatchCommand(std::string& commandLineInput);
     const ICommand* getCommand(const std::string& commandName);
     const std::unordered_map<std::string, std::unique_ptr<ICommand>>& getCommands() const;

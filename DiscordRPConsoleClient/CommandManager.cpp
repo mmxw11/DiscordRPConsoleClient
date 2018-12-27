@@ -8,13 +8,16 @@
 
 CommandManager::CommandManager(ApplicationManager& appManager) :
     appManager(appManager) {
-    registerCommand(std::make_unique<TestCmd>(appManager, "test_test_test"));
-    registerCommand(std::make_unique<ExitCommand>(appManager));
-    registerCommand(std::make_unique<HelpCommand>(appManager));
 }
 
 void CommandManager::registerCommand(std::unique_ptr<ICommand> command) {
     commands.emplace(command->getCommandName(), std::move(command));
+}
+
+void CommandManager::registerCommands() {
+    registerCommand(std::make_unique<TestCmd>(appManager, "test_test_test"));
+    registerCommand(std::make_unique<ExitCommand>(appManager));
+    registerCommand(std::make_unique<HelpCommand>(appManager));
 }
 
 bool CommandManager::dispatchCommand(std::string& commandLineInput) {
