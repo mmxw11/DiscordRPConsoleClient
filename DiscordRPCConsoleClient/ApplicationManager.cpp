@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "ApplicationManager.h"
+#include "StringUtils.h"
 #include <iostream>
 #include <string>
 
@@ -17,6 +18,7 @@ void ApplicationManager::runApplication() {
         std::cout << "Command: ";
         std::string commandInput;
         std::getline(std::cin, commandInput);
+        sutils::trim(commandInput);
         if (commandInput.empty()) {
             // just ignore...
             continue;
@@ -24,6 +26,8 @@ void ApplicationManager::runApplication() {
         bool found = commandManager.dispatchCommand(commandInput);
         if (!found) {
             std::cout << "'" << commandInput << "' is not a recognized command, \nUse help command for help.\n" << std::endl;
+        } else {
+            std::cout << std::endl;
         }
     }
 }

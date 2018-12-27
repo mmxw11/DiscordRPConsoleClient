@@ -17,6 +17,7 @@ public:
     const std::string& getCommandName() const;
     const std::string& getDescription() const;
     std::string getUsage() const;
+    int getRequiredArgumentsCount() const;
     const std::unordered_map<std::string, bool>& getArguments() const;
 protected:
     ApplicationManager& appManager;

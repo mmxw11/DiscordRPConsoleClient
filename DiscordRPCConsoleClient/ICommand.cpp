@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "ICommand.h"
+#include <algorithm>
 
 ICommand::ICommand(ApplicationManager& appManager, std::string name, std::string description) :
     appManager(appManager),
@@ -26,6 +27,13 @@ std::string ICommand::getUsage() const {
 
 const std::string& ICommand::getDescription() const {
     return description;
+}
+
+int ICommand::getRequiredArgumentsCount() const {
+    int count = std::count_if(arguments.begin(), arguments.end(), [](auto& entry) {
+        return entry.second;
+    });
+    return count;
 }
 
 const std::unordered_map<std::string, bool>& ICommand::getArguments() const {
