@@ -16,6 +16,15 @@ namespace sutils {
         return str1Cpy == str2Cpy;
     }
 
+    void trim(std::string& str) {
+        size_t findex = str.find_first_not_of(' ');
+        if (findex == std::string::npos) {
+            return;
+        }
+        size_t lindex = str.find_last_not_of(' ');
+        str = str.substr(findex, (lindex - findex + 1));
+    }
+
     void toLowerCase(std::string& str) {
         std::transform(str.begin(), str.end(), str.begin(), ::tolower);
     }
