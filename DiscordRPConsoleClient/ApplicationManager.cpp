@@ -2,8 +2,6 @@
 
 #include "ApplicationManager.h"
 #include "StringUtils.h"
-#include <iostream>
-#include <string>
 
 ApplicationManager::ApplicationManager() :
     commandManager(*this) {
@@ -16,16 +14,16 @@ void ApplicationManager::runApplication() {
     this->running = true;
     while (running) {
         std::cout << "Command: ";
-        std::string commandInput;
-        std::getline(std::cin, commandInput);
-        sutils::trim(commandInput);
-        if (commandInput.empty()) {
+        std::string commandLineInput;
+        std::getline(std::cin, commandLineInput);
+        sutils::trim(commandLineInput);
+        if (commandLineInput.empty()) {
             // just ignore...
             continue;
         }
-        bool found = commandManager.dispatchCommand(commandInput);
+        bool found = commandManager.dispatchCommand(commandLineInput);
         if (!found) {
-            std::cout << "'" << commandInput << "' is not a recognized command, \nUse help command for help.\n" << std::endl;
+            std::cout << "'" << commandLineInput << "' is not a recognized command, \nUse help command to see a list of available commands.\n" << std::endl;
         } else {
             std::cout << std::endl;
         }

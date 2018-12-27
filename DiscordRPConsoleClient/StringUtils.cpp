@@ -25,6 +25,11 @@ namespace sutils {
         str = str.substr(findex, (lindex - findex + 1));
     }
 
+    void addPaddingToRight(std::string& str, int minWidth) {
+        const int width = std::max(minWidth - static_cast<int>(str.size()), 0);
+        str += std::string(width, ' ');
+    }
+
     void toLowerCase(std::string& str) {
         std::transform(str.begin(), str.end(), str.begin(), ::tolower);
     }

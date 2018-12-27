@@ -1,12 +1,14 @@
 #include "pch.h"
 
 #include "ICommand.h"
+#include "StringUtils.h"
 #include <algorithm>
 
 ICommand::ICommand(ApplicationManager& appManager, std::string name, std::string description) :
     appManager(appManager),
     name(name),
     description(description) {
+    sutils::toUpperCase(this->name);
 }
 
 void ICommand::addArgument(std::string arg, bool required) {

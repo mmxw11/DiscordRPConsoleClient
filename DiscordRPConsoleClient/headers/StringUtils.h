@@ -9,6 +9,8 @@ namespace sutils {
 
     void trim(std::string& str);
 
+    void addPaddingToRight(std::string& str, int minWidth);
+
     void toLowerCase(std::string& str);
 
     void toUpperCase(std::string& str);

@@ -13,7 +13,10 @@ public:
     CommandManager(ApplicationManager& appManager);
     CommandManager(const CommandManager&) = delete;
     CommandManager& operator=(const CommandManager&) = delete;
-    bool dispatchCommand(std::string& commandInput);
+    void registerCommand(std::unique_ptr<ICommand> command);
+    bool dispatchCommand(std::string& commandLineInput);
+    const ICommand* getCommand(const std::string& commandName);
+    const std::unordered_map<std::string, std::unique_ptr<ICommand>>& getCommands() const;
 private:
     ApplicationManager& appManager;
     std::unordered_map<std::string, std::unique_ptr<ICommand>> commands;
