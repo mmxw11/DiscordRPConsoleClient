@@ -9,7 +9,7 @@ int main() {
     //TODO: 
     // split register commands [DONE]
     // second constructor to command manager
-    // remove testcmd and comments from command manager
+    // remove testcmd and comments from command manager [DONE]
     // rename project [DONE]
     // command aliases [WILL NOT IMPLEMENT]
     // command manager dispatch [DONE]

@@ -2,7 +2,6 @@
 
 #include "CommandManager.h"
 #include "StringUtils.h"
-#include "TestCmd.h"
 #include "ExitCommand.h"
 #include "HelpCommand.h"
 
@@ -15,17 +14,11 @@ void CommandManager::registerCommand(std::unique_ptr<ICommand> command) {
 }
 
 void CommandManager::registerCommands() {
-    registerCommand(std::make_unique<TestCmd>(appManager, "test_test_test"));
     registerCommand(std::make_unique<ExitCommand>(appManager));
     registerCommand(std::make_unique<HelpCommand>(appManager));
 }
 
 bool CommandManager::dispatchCommand(std::string& commandLineInput) {
-    /**if (sutils::equalsIgnoreCase(commandInput, "exit")) {
-        // this is only temporarily.
-        appManager.shutdown();
-        return true;
-    }*/
     std::vector<std::string> cmdInfoStorage;
     sutils::parseCommandLineArgs(commandLineInput, cmdInfoStorage);
     // remove args from commandLineInput and leave only the command name, first element is always the command.
