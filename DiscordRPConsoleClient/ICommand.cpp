@@ -32,9 +32,9 @@ const std::string& ICommand::getDescription() const {
 }
 
 int ICommand::getRequiredArgumentsCount() const {
-    int count = std::count_if(arguments.begin(), arguments.end(), [](auto& entry) {
+    int count = static_cast<int>(std::count_if(arguments.begin(), arguments.end(), [](auto& entry) {
         return entry.second;
-    });
+    }));
     return count;
 }
 

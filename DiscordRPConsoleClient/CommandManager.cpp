@@ -30,14 +30,14 @@ bool CommandManager::dispatchCommand(std::string& commandLineInput) {
         return false;
     }
     const std::unique_ptr<ICommand>& icommand = it->second;
-    unsigned requiredArgCount = icommand->getRequiredArgumentsCount();
+    unsigned requiredArgCount = static_cast<unsigned>(icommand->getRequiredArgumentsCount());
     if (cmdInfoStorage.size() - 1 < requiredArgCount) {
         std::cout << commandLineInput << ": Missing parameters." << std::endl;
         std::cout << "Usage: " << icommand->getUsage() << std::endl;
         return true;
     }
     // subtract one because the first element is always the command name.
-    unsigned argsLength = cmdInfoStorage.size() - 1;
+    unsigned argsLength = static_cast<unsigned>(cmdInfoStorage.size()) - 1;
     std::string* args = nullptr;
     if (argsLength != 0) {
         // advance the pointer address, args start at the second array element.

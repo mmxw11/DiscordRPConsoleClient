@@ -44,7 +44,7 @@ namespace sutils {
 
         // Copy the command line string to a character array.
         // strdup() uses malloc() to get memory for the new string.
-    #if defined(WIN32)
+    #if defined(_WIN32)
         char* charArray = _strdup(line.c_str());
     #else
         char* charArray = strdup(line.c_str());
