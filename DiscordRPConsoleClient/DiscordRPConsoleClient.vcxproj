@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="ApplicationManager.cpp" />
     <ClCompile Include="CommandManager.cpp" />
+    <ClCompile Include="DiscordHandler.cpp" />
     <ClCompile Include="HelpCommand.cpp" />
     <ClCompile Include="ICommand.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -171,6 +172,7 @@
   <ItemGroup>
     <ClInclude Include="headers\ApplicationManager.h" />
     <ClInclude Include="headers\CommandManager.h" />
+    <ClInclude Include="headers\DiscordHandler.h" />
     <ClInclude Include="headers\ExitCommand.h" />
     <ClInclude Include="headers\HelpCommand.h" />
     <ClInclude Include="headers\ICommand.h" />

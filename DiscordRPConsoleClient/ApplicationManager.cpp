@@ -2,9 +2,15 @@
 
 #include "ApplicationManager.h"
 #include "StringUtils.h"
+#include "Windows.h"
 
 ApplicationManager::ApplicationManager() :
     commandManager(*this) {
+}
+
+ApplicationManager::~ApplicationManager() {
+    OutputDebugString(L"ApplicationManager destructor called!\n");
+    shutdown();
 }
 
 void ApplicationManager::runApplication() {
@@ -32,9 +38,18 @@ void ApplicationManager::runApplication() {
 }
 
 void ApplicationManager::shutdown() {
+    if (!running) {
+        // return;
+    }
+    OutputDebugString(L"ApplicationManager shutdown called!\n");
+    discordHandler.shutdown();
     this->running = false;
 }
 
 CommandManager& ApplicationManager::getCommandManager() {
     return commandManager;
+}
+
+DiscordHandler& ApplicationManager::getDiscordHandler() {
+    return discordHandler;
 }
