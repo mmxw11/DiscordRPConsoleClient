@@ -2,7 +2,6 @@
 
 #include "DiscordHandler.h"
 #include "discord-rpc/discord_rpc.h"
-#include "Windows.h"
 
 // link discord library
 #if defined(_WIN64)
@@ -12,12 +11,10 @@
 #endif
 
 DiscordHandler::DiscordHandler() {
-    OutputDebugString(L"DiscordHandler constructor\n");
 }
 
 DiscordHandler::~DiscordHandler() {
     shutdown();
-    OutputDebugString(L"DiscordHandler destructor\n");
 }
 
 void DiscordHandler::init() {
@@ -25,9 +22,9 @@ void DiscordHandler::init() {
 
 void DiscordHandler::shutdown() {
     if (!initialized) {
-        // return;
+        return;
     }
-    OutputDebugString(L"Discord RP Client shutdown!\n");
+    std::cout << "Discord RP Client shutdown!" << std::endl;
     Discord_Shutdown();
     this->initialized = false;
 }

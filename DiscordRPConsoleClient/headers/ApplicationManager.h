@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include "CommandManager.h"
 #include "DiscordHandler.h"
 
@@ -15,7 +16,7 @@ public:
     CommandManager& getCommandManager();
     DiscordHandler& getDiscordHandler();
 private:
-    bool running;
+    std::atomic<bool> running;
     CommandManager commandManager;
     DiscordHandler discordHandler;
 };

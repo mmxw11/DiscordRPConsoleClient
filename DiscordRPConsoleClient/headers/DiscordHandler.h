@@ -7,7 +7,6 @@ public:
     DiscordHandler(const DiscordHandler&) = delete;
     DiscordHandler& operator=(const DiscordHandler&) = delete;
     ~DiscordHandler();
-
     void init();
     void shutdown();
 private:

@@ -2,14 +2,12 @@
 
 #include "ApplicationManager.h"
 #include "StringUtils.h"
-#include "Windows.h"
 
 ApplicationManager::ApplicationManager() :
     commandManager(*this) {
 }
 
 ApplicationManager::~ApplicationManager() {
-    OutputDebugString(L"ApplicationManager destructor called!\n");
     shutdown();
 }
 
@@ -23,6 +21,12 @@ void ApplicationManager::runApplication() {
         std::cout << "Command: ";
         std::string commandLineInput;
         std::getline(std::cin, commandLineInput);
+        if (!std::cin.good()) {
+            // unexpected input (ctrl + c/break for example)
+            std::cin.clear();
+            std::cout << std::endl;
+            break;
+        }
         sutils::trim(commandLineInput);
         if (commandLineInput.empty()) {
             // just ignore...
@@ -39,11 +43,10 @@ void ApplicationManager::runApplication() {
 
 void ApplicationManager::shutdown() {
     if (!running) {
-        // return;
+        return;
     }
-    OutputDebugString(L"ApplicationManager shutdown called!\n");
-    discordHandler.shutdown();
     this->running = false;
+    discordHandler.shutdown();
 }
 
 CommandManager& ApplicationManager::getCommandManager() {
