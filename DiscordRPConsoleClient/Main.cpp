@@ -22,7 +22,7 @@ static BOOL WINAPI ctrlHandler(DWORD dwCtrlType) {
 
 int main() {
     // set handler for shutdown.
-    if (SetConsoleCtrlHandler(ctrlHandler, TRUE)) {
+    if (!SetConsoleCtrlHandler(ctrlHandler, TRUE)) {
         printf("\nERROR: Could not set control handler.");
         return 1;
     }
