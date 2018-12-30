@@ -1,5 +1,7 @@
 #pragma once
 
+#include <chrono>
+
 class DiscordHandler {
 
 public:
@@ -8,9 +10,10 @@ public:
         CONNECTED,
         UNINITIALIZED
     };
-    static DiscordHandler& getInstance();
+
     bool initialize(const std::string& applicationId);
     bool uninitialize();
+    static DiscordHandler& getInstance();
     bool isCallbackUpdate();
     State getHandlerState() const;
 private:
@@ -24,4 +27,5 @@ private:
     static void handleDiscordError(int errcode, const char* message);
     // variables
     State handlerState;
+    std::chrono::steady_clock::time_point lastCallbackUpdate;
 };

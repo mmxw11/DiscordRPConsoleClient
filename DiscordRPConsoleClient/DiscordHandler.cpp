@@ -20,6 +20,17 @@ DiscordHandler::~DiscordHandler() {
 //TODO: REMOVE
 //std::cout << "Tried to uninitialize handler when it's alreay uninitialized!" << std::endl;
  //assert((this->handlerState == State::UNINITIALIZED  && "Tried to initialize handler it's already initialized!"));
+static void UpdatePresence() { // TEST CODE
+    DiscordRichPresence discordPresence;
+    memset(&discordPresence, 0, sizeof(discordPresence));
+    discordPresence.state = "Playing TEst";
+    discordPresence.details = "Test";
+    discordPresence.startTimestamp = 1546180244159;
+    discordPresence.endTimestamp = 1546180844159;
+    discordPresence.largeImageText = "Numbani";
+    discordPresence.smallImageText = "Rogue - Level 99999";
+    Discord_UpdatePresence(&discordPresence);
+}
 
 bool DiscordHandler::initialize(const std::string& applicationId) {
     if (handlerState != State::UNINITIALIZED) {
@@ -51,6 +62,16 @@ DiscordHandler& DiscordHandler::getInstance() {
     return instance;
 }
 
+bool DiscordHandler::isCallbackUpdate() {
+    auto time = std::chrono::steady_clock::now();
+    auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(time - lastCallbackUpdate);
+    if (elapsedTime >= std::chrono::milliseconds(1000)) {
+        lastCallbackUpdate = time;
+        return true;
+    }
+    return false;
+}
+
 DiscordHandler::State DiscordHandler::getHandlerState() const {
     return handlerState;
 }
@@ -58,6 +79,7 @@ DiscordHandler::State DiscordHandler::getHandlerState() const {
 void DiscordHandler::handleDiscordReady(const DiscordUser* connectedUser) {
     printf("\nDiscord: connected to user %s#%s - %s\n", connectedUser->username, connectedUser->discriminator, connectedUser->userId);
     getInstance().handlerState = State::CONNECTED;
+    UpdatePresence(); // TODO: TEST CODE
 }
 
 void DiscordHandler::handleDiscordDisconnected(int errcode, const char* message) {

@@ -4,6 +4,9 @@
 #include "StringUtils.h"
 #include <assert.h>
 
+// Ignore function definition not found warning. (linker will take care of this later on...)
+extern "C" void Discord_RunCallbacks();
+
 ApplicationManager::ApplicationManager() :
     commandManager(*this),
     discordHandler(DiscordHandler::getInstance()) {
@@ -24,8 +27,9 @@ void ApplicationManager::runApplication() {
         // update discord stuff.
         DiscordHandler::State handlerState = discordHandler.getHandlerState();
         if (handlerState != DiscordHandler::State::UNINITIALIZED) {
-            //TODO: CALLBACKS!
-
+            if (discordHandler.isCallbackUpdate()) {
+                Discord_RunCallbacks();
+            }
             if (handlerState == DiscordHandler::State::INITIALIZED) {
                 continue;
             }
