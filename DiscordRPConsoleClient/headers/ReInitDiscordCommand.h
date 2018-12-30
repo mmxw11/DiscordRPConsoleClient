@@ -5,7 +5,7 @@
 class ReInitDiscordCommand : public ICommand {
 
 public:
-    ReInitDiscordCommand(ApplicationManager& appManager);
+    ReInitDiscordCommand();
     void executeCommand(std::string* args, unsigned argsLength) override;
 };
 

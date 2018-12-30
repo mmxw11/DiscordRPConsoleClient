@@ -4,7 +4,11 @@
 #include "StringUtils.h"
 #include <algorithm>
 
-ICommand::ICommand(ApplicationManager& appManager, std::string name, std::string description) :
+ICommand::ICommand(std::string name, std::string description) :
+    ICommand(nullptr, name, description) {
+}
+
+ICommand::ICommand(ApplicationManager* appManager, std::string name, std::string description) :
     appManager(appManager),
     name(name),
     description(description) {

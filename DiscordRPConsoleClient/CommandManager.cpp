@@ -15,9 +15,9 @@ void CommandManager::registerCommand(std::unique_ptr<ICommand> command) {
 }
 
 void CommandManager::registerCommands() {
-    registerCommand(std::make_unique<ExitCommand>(appManager));
-    registerCommand(std::make_unique<HelpCommand>(appManager));
-    registerCommand(std::make_unique<ReInitDiscordCommand>(appManager));
+    registerCommand(std::make_unique<ExitCommand>(&appManager));
+    registerCommand(std::make_unique<HelpCommand>(&appManager));
+    registerCommand(std::make_unique<ReInitDiscordCommand>());
 }
 
 bool CommandManager::dispatchCommand(std::string& commandLineInput) {

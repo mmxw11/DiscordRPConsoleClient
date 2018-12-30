@@ -3,8 +3,8 @@
 #include "ReInitDiscordCommand.h"
 #include "DiscordHandler.h"
 
-ReInitDiscordCommand::ReInitDiscordCommand(ApplicationManager& appManager) :
-    ICommand(appManager, "reinitdiscord", "Reinitialize Discord.") {
+ReInitDiscordCommand::ReInitDiscordCommand() :
+    ICommand("reinitdiscord", "Reinitialize Discord.") {
 }
 
 void ReInitDiscordCommand::executeCommand(std::string* args, unsigned argsLength) {
