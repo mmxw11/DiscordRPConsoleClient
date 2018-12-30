@@ -25,14 +25,19 @@ int main() {
     if (!SetConsoleCtrlHandler(ctrlHandler, TRUE)) {
         printf("\nERROR: Could not set control handler.");
         return 1;
-    }
+    }//MAY TAKE A WHILE TO UPDATE WARNING
     //find discord instance
     //application id
-    //{
-    ApplicationManager appManagerInstance;
-    ::appManager = &appManagerInstance;
-    appManagerInstance.runApplication();
-    // }
+    std::cout << "Use help command to see a list of available commands." << std::endl;
+    std::cout << std::endl;
+    {
+        //TODO: do something about console getting overridden
+        ApplicationManager appManagerInstance;
+        ::appManager = &appManagerInstance;
+        appManagerInstance.runApplication();
+        //  appManagerInstance.shutdown();
+    }
     std::cout << "Bye" << std::endl;
-    //_CrtDumpMemoryLeaks();
+    _CrtDumpMemoryLeaks();
+    return 0;
 }
