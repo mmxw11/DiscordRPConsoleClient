@@ -17,7 +17,7 @@ void HelpCommand::executeCommand(std::string* args, unsigned argsLength) {
         sutils::toUpperCase(argCommandName);
         const ICommand* icommand = commandManager.getCommand(argCommandName);
         if (icommand == nullptr) {
-            std::cout << "'" << argCommandName << "' is not a recognized command, \nUse " << getCommandName() << " command to see a list of available commands.\n" << std::endl;
+            std::cout << "'" << argCommandName << "' is not a recognized command, \nUse \"" << getCommandName() << "\" command to see a list of available commands.\n" << std::endl;
             return;
         }
         std::cout << argCommandName << ": " << icommand->getDescription() << std::endl;
@@ -25,7 +25,7 @@ void HelpCommand::executeCommand(std::string* args, unsigned argsLength) {
             std::cout << "Usage: " << icommand->getUsage() << std::endl;
         }
     } else {
-        std::cout << "Use " << getCommandName() << " command-name for more information on a specific command." << std::endl;
+        std::cout << "Use \"" << getCommandName() << " command-name\" for more information on a specific command." << std::endl;
         for (auto& entry : commandManager.getCommands()) {
             const std::unique_ptr<ICommand>& icommand = entry.second;
             std::string icommandName = icommand->getCommandName();

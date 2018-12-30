@@ -31,6 +31,8 @@ public:
 
     void setPartyInfo(const int partySize, const int partyMax); //TODO CHECK IF STATE SET!
 
+    void printNotConnectedErrorMessage() const;
+
     static DiscordHandler& getInstance();
     bool isCallbackUpdate();
     State getHandlerState() const;

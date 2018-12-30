@@ -51,7 +51,7 @@ void ApplicationManager::runApplication() {
         std::cout << std::endl;
         bool found = commandManager.dispatchCommand(commandLineInput);
         if (!found) {
-            std::cout << "'" << commandLineInput << "' is not a recognized command, \nUse help command to see a list of available commands." << std::endl;
+            std::cout << "'" << commandLineInput << "' is not a recognized command, \nUse \"HELP\" command to see a list of available commands." << std::endl;
         }
     }
 }

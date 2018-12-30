@@ -28,7 +28,7 @@ int main() {
     }//MAY TAKE A WHILE TO UPDATE WARNING
     //find discord instance
     //application id
-    std::cout << "Use help command to see a list of available commands." << std::endl;
+    std::cout << "Use \"HELP\" command to see a list of available commands." << std::endl;
     std::cout << std::endl;
     {
         //TODO: do something about console getting overridden

@@ -12,7 +12,6 @@ void ClearPresenceCommand::executeCommand(std::string* args, unsigned argsLength
     bool result = dhandler.clearPresenceInfo();
     std::cout << "Clearing presence information." << std::endl;
     if (!result) {
-        std::cout << "Cannot update to Discord because the client is not connected!" << std::endl;
-        std::cout << "Try reinit Discord by calling reinitdiscord command." << std::endl;
+        dhandler.printNotConnectedErrorMessage();
     }
 }
