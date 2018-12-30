@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include "DiscordHandler.h"
+#include <thread>
+#include <Windows.h>
 #include "discord-rpc/discord_rpc.h"
 
 // link discord library
@@ -10,29 +12,62 @@
 #pragma comment(lib, "discord-rpc-win32.lib")
 #endif
 
+DiscordRichPresence DiscordHandler::discordPresence;
+
 DiscordHandler::DiscordHandler() :
     handlerState(State::UNINITIALIZED) {
+    // memset(&discordPresence, 0, sizeof(discordPresence));
 }
 
 DiscordHandler::~DiscordHandler() {
     uninitialize();
 }
+
+/**
+TODO:
+remove app id from init and own function for it (+ ask at startup)
+disconnect command
+connect command
+reset presence command
+
+const char* state;
+const char* details;
+
+DONT SEND ENDTIMESTAMP WITHOUT STATE OR YOUR DISCORD CRASHES!
+int64_t startTimestamp;
+int64_t endTimestamp;
+ONLY START -> Elpsed
+ONLY END -> Remaining
+BOTH -> Time left
+
+const char* largeImageKey;
+const char* largeImageText;
+
+----YOU MUST HAVE LARGE IMAGE TO DISPLAY THESE:---
+const char* smallImageKey;
+const char* smallImageText;
+--------------------------------------------------
+
+const char* partyId; [NOT REQUIRED]
+
+----YOU MUST SEND STATE TO DISPLAY THESE:---
+MUST BE SENT AT THE SAME TIME!
+int partySize,
+int partyMax;
+--------------------------------------------------
+
+ const char* matchSecret; [NOT USED]
+const char* joinSecret;   [NOT USED]
+const char* spectateSecret; [NOT USED]
+int8_t instance; [NOT USED]
+
+
+*/
 //TODO: REMOVE
 //std::cout << "Tried to uninitialize handler when it's alreay uninitialized!" << std::endl;
  //assert((this->handlerState == State::UNINITIALIZED  && "Tried to initialize handler it's already initialized!"));
-static void UpdatePresence() { // TEST CODE
-    DiscordRichPresence discordPresence;
-    memset(&discordPresence, 0, sizeof(discordPresence));
-    discordPresence.state = "Playing TEst";
-    discordPresence.details = "Test";
-    discordPresence.startTimestamp = 1546180244159;
-    discordPresence.endTimestamp = 1546180844159;
-    discordPresence.largeImageText = "Numbani";
-    discordPresence.smallImageText = "Rogue - Level 99999";
-    Discord_UpdatePresence(&discordPresence);
-}
 
-bool DiscordHandler::initialize(const std::string& applicationId) {
+bool DiscordHandler::initialize() {
     if (handlerState != State::UNINITIALIZED) {
         return false;
     }
@@ -42,7 +77,7 @@ bool DiscordHandler::initialize(const std::string& applicationId) {
     handlers.disconnected = handleDiscordDisconnected;
     handlers.errored = handleDiscordError;
 
-    Discord_Initialize(applicationId.c_str(), &handlers, 1, NULL);
+    Discord_Initialize("528564887992139817", &handlers, 1, NULL);
     std::cout << "Waiting for Discord connection (Ctrl + C to terminate)..." << std::endl;
     this->handlerState = State::INITIALIZED;
     return true;
@@ -54,6 +89,15 @@ bool DiscordHandler::uninitialize() {
     }
     Discord_Shutdown();
     this->handlerState = State::UNINITIALIZED;
+    return true;
+}
+
+bool DiscordHandler::resetRichPresence() {
+    memset(&discordPresence, 0, sizeof(discordPresence)); // clear previous values.
+    if (handlerState != State::CONNECTED) {
+        return false;
+    }
+    Discord_ClearPresence();
     return true;
 }
 
@@ -79,7 +123,6 @@ DiscordHandler::State DiscordHandler::getHandlerState() const {
 void DiscordHandler::handleDiscordReady(const DiscordUser* connectedUser) {
     printf("\nDiscord: connected to user %s#%s - %s\n", connectedUser->username, connectedUser->discriminator, connectedUser->userId);
     getInstance().handlerState = State::CONNECTED;
-    UpdatePresence(); // TODO: TEST CODE
 }
 
 void DiscordHandler::handleDiscordDisconnected(int errcode, const char* message) {

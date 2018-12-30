@@ -11,6 +11,7 @@ ApplicationManager::ApplicationManager() :
     commandManager(*this),
     discordHandler(DiscordHandler::getInstance()) {
 }
+
 ApplicationManager::~ApplicationManager() {
     shutdown();
 }
@@ -20,7 +21,7 @@ void ApplicationManager::runApplication() {
         return;
     }
     commandManager.registerCommands();
-    bool success = discordHandler.initialize("528564887992139817"); //TODO: HARDCODED VALUE
+    bool success = discordHandler.initialize(); //TODO: HARDCODED VALUE
     assert(success);
     this->running = true;
     while (running) {

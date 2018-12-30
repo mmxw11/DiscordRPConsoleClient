@@ -4,6 +4,7 @@
 #include "StringUtils.h"
 #include "ExitCommand.h"
 #include "HelpCommand.h"
+#include "ReInitDiscordCommand.h"
 
 CommandManager::CommandManager(ApplicationManager& appManager) :
     appManager(appManager) {
@@ -16,6 +17,7 @@ void CommandManager::registerCommand(std::unique_ptr<ICommand> command) {
 void CommandManager::registerCommands() {
     registerCommand(std::make_unique<ExitCommand>(appManager));
     registerCommand(std::make_unique<HelpCommand>(appManager));
+    registerCommand(std::make_unique<ReInitDiscordCommand>(appManager));
 }
 
 bool CommandManager::dispatchCommand(std::string& commandLineInput) {
