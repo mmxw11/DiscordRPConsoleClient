@@ -6,6 +6,7 @@
 #include "HelpCommand.h"
 #include "ReInitDiscordCommand.h"
 #include "ClearPresenceCommand.h"
+#include "SetUserStatusCommand.h"
 
 CommandManager::CommandManager(ApplicationManager& appManager) :
     appManager(appManager) {
@@ -22,6 +23,7 @@ void CommandManager::registerCommands() {
     // Discord specific commands.
     registerCommand(std::make_unique<ReInitDiscordCommand>());
     registerCommand(std::make_unique<ClearPresenceCommand>());
+    registerCommand(std::make_unique<SetUserStatusCommand>());
 }
 
 bool CommandManager::dispatchCommand(std::string& commandLineInput) {

@@ -101,9 +101,22 @@ bool DiscordHandler::clearPresenceInfo() {
     return true;
 }
 
+bool DiscordHandler::setStatus(const char* status) {
+    discordPresence.state = status;
+    return updatePresence();
+}
+
 void DiscordHandler::printNotConnectedErrorMessage() const {
     std::cout << "Cannot update to Discord because the client is not connected!" << std::endl;
     std::cout << "Try reinit Discord by calling \"reinitdiscord\" command." << std::endl;
+}
+
+bool DiscordHandler::updatePresence() {
+    if (handlerState != State::CONNECTED) {
+        return false;
+    }
+    Discord_UpdatePresence(&discordPresence);
+    return true;
 }
 
 DiscordHandler& DiscordHandler::getInstance() {
@@ -128,6 +141,7 @@ DiscordHandler::State DiscordHandler::getHandlerState() const {
 void DiscordHandler::handleDiscordReady(const DiscordUser* connectedUser) {
     printf("[Discord]: connected to user %s#%s - %s\n", connectedUser->username, connectedUser->discriminator, connectedUser->userId);
     getInstance().handlerState = State::CONNECTED;
+    getInstance().updatePresence();
 }
 
 void DiscordHandler::handleDiscordDisconnected(int errcode, const char* message) {

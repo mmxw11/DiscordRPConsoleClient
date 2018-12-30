@@ -173,6 +173,7 @@
     </ClCompile>
     <ClCompile Include="ReInitDiscordCommand.cpp" />
     <ClCompile Include="ClearPresenceCommand.cpp" />
+    <ClCompile Include="SetUserStatusCommand.cpp" />
     <ClCompile Include="StringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +186,7 @@
     <ClInclude Include="headers\pch.h" />
     <ClInclude Include="headers\ReInitDiscordCommand.h" />
     <ClInclude Include="headers\ClearPresenceCommand.h" />
+    <ClInclude Include="headers\SetUserStatusCommand.h" />
     <ClInclude Include="headers\StringUtils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

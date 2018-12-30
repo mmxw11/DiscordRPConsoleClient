@@ -18,16 +18,16 @@ public:
     bool initialize();
     bool uninitialize();
     bool clearPresenceInfo();
+    bool setStatus(const char* status);
 
     //TODO:
-    void setState(const std::string state);
     void setDetails(const std::string details);
 
     void setStartTimestamp();
     void setEndTimestamp();
 
-    void setLargeImage(const std::string imageName, const std::string imageText = NULL);
-    void setSmallImage(const std::string imageName, const std::string imageText = NULL); // CHECK IF LARGE IMAGE SET
+    void setLargeImage(const std::string imageName, const std::string imageText);
+    void setSmallImage(const std::string imageName, const std::string imageText); // CHECK IF LARGE IMAGE SET
 
     void setPartyInfo(const int partySize, const int partyMax); //TODO CHECK IF STATE SET!
 
@@ -39,6 +39,7 @@ public:
 private:
     DiscordHandler();
     ~DiscordHandler();
+    bool updatePresence();
     //discord event listeners
     static void handleDiscordReady(const struct DiscordUser* connectedUser);
     static void handleDiscordDisconnected(int errcode, const char* message);
