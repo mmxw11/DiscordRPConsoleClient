@@ -18,5 +18,5 @@ public:
 private:
     std::atomic<bool> running;
     CommandManager commandManager;
-    DiscordHandler discordHandler;
+    DiscordHandler& discordHandler;
 };

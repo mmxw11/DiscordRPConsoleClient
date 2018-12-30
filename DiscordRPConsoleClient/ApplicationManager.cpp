@@ -2,11 +2,12 @@
 
 #include "ApplicationManager.h"
 #include "StringUtils.h"
+#include <assert.h>
 
 ApplicationManager::ApplicationManager() :
-    commandManager(*this) {
+    commandManager(*this),
+    discordHandler(DiscordHandler::getInstance()) {
 }
-
 ApplicationManager::~ApplicationManager() {
     shutdown();
 }
@@ -16,8 +17,20 @@ void ApplicationManager::runApplication() {
         return;
     }
     commandManager.registerCommands();
+    bool success = discordHandler.initialize("528564887992139817"); //TODO: HARDCODED VALUE
+    assert(success);
     this->running = true;
     while (running) {
+        // update discord stuff.
+        DiscordHandler::State handlerState = discordHandler.getHandlerState();
+        if (handlerState != DiscordHandler::State::UNINITIALIZED) {
+            //TODO: CALLBACKS!
+
+            if (handlerState == DiscordHandler::State::INITIALIZED) {
+                continue;
+            }
+        }
+        // commands.
         std::cout << "Command: ";
         std::string commandLineInput;
         std::getline(std::cin, commandLineInput);
@@ -46,7 +59,7 @@ void ApplicationManager::shutdown() {
         return;
     }
     this->running = false;
-    discordHandler.shutdown();
+    discordHandler.uninitialize();
 }
 
 CommandManager& ApplicationManager::getCommandManager() {
