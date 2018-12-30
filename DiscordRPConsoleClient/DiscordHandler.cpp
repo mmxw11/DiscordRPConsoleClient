@@ -92,7 +92,7 @@ bool DiscordHandler::uninitialize() {
     return true;
 }
 
-bool DiscordHandler::resetRichPresence() {
+bool DiscordHandler::clearPresenceInfo() {
     memset(&discordPresence, 0, sizeof(discordPresence)); // clear previous values.
     if (handlerState != State::CONNECTED) {
         return false;

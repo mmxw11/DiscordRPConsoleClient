@@ -172,6 +172,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ReInitDiscordCommand.cpp" />
+    <ClCompile Include="ClearPresenceCommand.cpp" />
     <ClCompile Include="StringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +184,7 @@
     <ClInclude Include="headers\ICommand.h" />
     <ClInclude Include="headers\pch.h" />
     <ClInclude Include="headers\ReInitDiscordCommand.h" />
+    <ClInclude Include="headers\ClearPresenceCommand.h" />
     <ClInclude Include="headers\StringUtils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

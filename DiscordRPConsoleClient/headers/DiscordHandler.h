@@ -17,9 +17,9 @@ public:
     };
     bool initialize();
     bool uninitialize();
+    bool clearPresenceInfo();
 
     //TODO:
-    bool resetRichPresence();
     void setState(const std::string state);
     void setDetails(const std::string details);
 

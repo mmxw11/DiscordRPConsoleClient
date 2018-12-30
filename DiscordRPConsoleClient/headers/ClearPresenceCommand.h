@@ -2,9 +2,9 @@
 
 #include "ICommand.h"
 
-class ReInitDiscordCommand : public ICommand {
+class ClearPresenceCommand : public ICommand {
 
 public:
-    ReInitDiscordCommand();
+    ClearPresenceCommand();
     void executeCommand(std::string* args, unsigned argsLength) override;
 };
