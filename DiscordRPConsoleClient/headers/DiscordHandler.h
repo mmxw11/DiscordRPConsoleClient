@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <atomic>
 //#include "discord-rpc/discord_rpc.h"
 
 struct DiscordRichPresence;
@@ -35,7 +36,7 @@ public:
 
     static DiscordHandler& getInstance();
     bool isCallbackUpdate();
-    State getHandlerState() const;
+    const std::atomic<State>& getHandlerState() const;
 private:
     DiscordHandler();
     ~DiscordHandler();
@@ -45,7 +46,7 @@ private:
     static void handleDiscordDisconnected(int errcode, const char* message);
     static void handleDiscordError(int errcode, const char* message);
     // variables
-    State handlerState;
+    std::atomic<State> handlerState;
     static DiscordRichPresence discordPresence;
     std::chrono::steady_clock::time_point lastCallbackUpdate;
 };

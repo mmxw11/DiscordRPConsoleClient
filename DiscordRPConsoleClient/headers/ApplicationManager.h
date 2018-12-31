@@ -16,6 +16,7 @@ public:
     CommandManager& getCommandManager();
     DiscordHandler& getDiscordHandler();
 private:
+    void runConsoleInputLoop();
     std::atomic<bool> running;
     CommandManager commandManager;
     DiscordHandler& discordHandler;

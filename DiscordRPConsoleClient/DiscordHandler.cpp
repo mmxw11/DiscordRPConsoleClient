@@ -127,14 +127,14 @@ DiscordHandler& DiscordHandler::getInstance() {
 bool DiscordHandler::isCallbackUpdate() {
     auto time = std::chrono::steady_clock::now();
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(time - lastCallbackUpdate);
-    if (elapsedTime >= std::chrono::milliseconds(1000)) {
+    if (elapsedTime >= std::chrono::milliseconds(5000)) {
         lastCallbackUpdate = time;
         return true;
     }
     return false;
 }
 
-DiscordHandler::State DiscordHandler::getHandlerState() const {
+const std::atomic<DiscordHandler::State>& DiscordHandler::getHandlerState() const {
     return handlerState;
 }
 

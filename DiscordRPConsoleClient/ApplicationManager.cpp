@@ -2,6 +2,7 @@
 
 #include "ApplicationManager.h"
 #include "StringUtils.h"
+#include <thread>
 #include <assert.h>
 
 // Ignore function definition not found warning. (linker will take care of this later on...)
@@ -24,23 +25,34 @@ void ApplicationManager::runApplication() {
     bool success = discordHandler.initialize(); //TODO: HARDCODED VALUE
     assert(success);
     this->running = true;
+    // start console input thread.
+    std::thread consoleThread(&ApplicationManager::runConsoleInputLoop, this);
+    // discord callbacks.
     while (running) {
-        // update discord stuff.
-        DiscordHandler::State handlerState = discordHandler.getHandlerState();
-        if (handlerState != DiscordHandler::State::UNINITIALIZED) {
-            if (discordHandler.isCallbackUpdate()) {
-                Discord_RunCallbacks();
-            }
-            if (handlerState == DiscordHandler::State::INITIALIZED) {
-                continue;
-            }
+        const DiscordHandler::State& handlerState = discordHandler.getHandlerState();
+        if (handlerState == DiscordHandler::State::UNINITIALIZED) {
+            continue;
         }
-        // commands.
+        if (discordHandler.isCallbackUpdate()) {
+            Discord_RunCallbacks();
+        }
+    }
+    std::cin.putback('\n'); // push a new line character into the buffer. triggers getline if needed.
+    consoleThread.join();
+}
+
+void ApplicationManager::runConsoleInputLoop() {
+    while (running) {
+        if (discordHandler.getHandlerState() == DiscordHandler::INITIALIZED) {
+            std::this_thread::sleep_for(std::chrono::seconds(2));
+            continue;
+        }
         std::string commandLineInput;
         std::getline(std::cin, commandLineInput);
         if (!std::cin.good()) {
             // unexpected input (ctrl + c/break for example)
             std::cin.clear();
+            shutdown();
             break;
         }
         sutils::trim(commandLineInput);
