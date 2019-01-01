@@ -7,7 +7,7 @@
 #include <unordered_map>
 
 SetImageCommand::SetImageCommand() :
-    ICommand("setimage", "Set images for profile artwork + tooltip details. (\"--largeimage/--smallimage --image image_name --tooltip image_info\")") {
+    ICommand("setimage", "Set images for profile artwork + image tooltip details. (\"--largeimage/--smallimage --image image_name --tooltip image_info\")") {
     addArgument("--largeimage/--smallimage", true);
     addArgument("--image image_name/reset", false);
     addArgument("--tooltip image_info/reset", false);
@@ -18,8 +18,8 @@ void SetImageCommand::executeCommand(std::string* args, unsigned argsLength) {
     sutils::trim(type);
     sutils::toLowerCase(type);
     DiscordHandler& dhandler = DiscordHandler::getInstance();
-    bool update = parseImageOptions(args, argsLength);
-    if (update) {
+    bool updateRequired = parseImageOptions(args, argsLength);
+    if (updateRequired) {
         if (!dhandler.updatePresence()) {
             dhandler.printNotConnectedErrorMessage();
         }
@@ -31,16 +31,15 @@ bool SetImageCommand::parseImageOptions(std::string* args, unsigned argsLength) 
     std::unordered_map<std::string, std::string*> options;
     const std::string* lastImageType = nullptr;
     const std::string* lastOption = nullptr;
-    bool update = false;
+    bool updateRequired = false;
     for (unsigned i = 0; i < argsLength; i++) {
         // check for new image type.
         if (sutils::equalsIgnoreCase(args[i], "--largeimage") || sutils::equalsIgnoreCase(args[i], "--smallimage")) {
             // set previous settings.
             if (lastImageType != nullptr) {
                 imageTypes.emplace(*lastImageType);
-                bool updateRequired = setImageOptions(*lastImageType, options);
-                if (!update && updateRequired) {
-                    update = true;
+                if (setImageOptions(*lastImageType, options)) {
+                    updateRequired = true;
                 }
             }
             // detected a new image type.
@@ -79,42 +78,39 @@ bool SetImageCommand::parseImageOptions(std::string* args, unsigned argsLength) 
             }
             continue;
         }
-        // get the value.
+        // add the value to the map.
         options.emplace(*lastOption, &args[i]);
         lastOption = nullptr;
     }
     // update last image if needed.
-    if (lastImageType != nullptr) {
-        bool updateRequired = setImageOptions(*lastImageType, options);
-        if (!update && updateRequired) {
-            update = true;
-        }
+    if (lastImageType != nullptr && setImageOptions(*lastImageType, options)) {
+        updateRequired = true;
     }
-    return update;
+    return updateRequired;
 }
 
 bool SetImageCommand::setImageOptions(const std::string& imageType, const std::unordered_map<std::string, std::string*>& options) const {
     const bool large = imageType == "--largeimage";
     const std::string message = "\"" + std::string(large ? "Large" : "Small").append(" image\"");
     DiscordHandler& dhandler = DiscordHandler::getInstance();
-    bool update = false;
+    bool updateRequired = false;
     // image.
     std::string data = "--image";
     if (shouldUpdateImageData(data, options)) {
-        update = dhandler.setImage(data, large);
+        updateRequired = !dhandler.setImage(data, large, false);
         sendUpdateFeedback(message, data.empty());
     }
     // image tooltip.
     data = "--tooltip";
     if (shouldUpdateImageData(data, options)) {
-        update = dhandler.setImageText(data, large);
-        bool reset = data.empty();
+        updateRequired = !dhandler.setImageText(data, large, false);
+        const bool reset = data.empty();
         sendUpdateFeedback(message + " tooltip" + (reset ? "" : " to \"" + data + "\""), reset);
     }
-    if (!update) {
+    if (!updateRequired) {
         std::cout << message << ": nothing to update." << std::endl;
     }
-    return update;
+    return updateRequired;
 }
 
 bool SetImageCommand::shouldUpdateImageData(std::string& data, const std::unordered_map<std::string, std::string*>& options) const {
@@ -127,12 +123,11 @@ bool SetImageCommand::shouldUpdateImageData(std::string& data, const std::unorde
     if (value.empty()) {
         return false;
     }
-    bool reset = sutils::equalsIgnoreCase(value, "reset");
-    data = reset ? "" : value;
+    data = sutils::equalsIgnoreCase(value, "reset") ? "" : value;
     return true;
 }
 
-void SetImageCommand::sendUpdateFeedback(const std::string& str, bool reset) const {
+void SetImageCommand::sendUpdateFeedback(const std::string& str, const bool& reset) const {
     if (reset) {
         std::cout << "Resetting " << str << "." << std::endl;
     } else {

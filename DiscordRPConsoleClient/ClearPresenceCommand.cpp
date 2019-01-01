@@ -9,9 +9,9 @@ ClearPresenceCommand::ClearPresenceCommand() :
 
 void ClearPresenceCommand::executeCommand(std::string* args, unsigned argsLength) {
     DiscordHandler& dhandler = DiscordHandler::getInstance();
-    bool connected = dhandler.clearPresenceInfo();
+    bool updated = dhandler.clearPresenceInfo();
     std::cout << "Clearing presence information." << std::endl;
-    if (!connected) {
+    if (!updated) {
         dhandler.printNotConnectedErrorMessage();
     }
 }

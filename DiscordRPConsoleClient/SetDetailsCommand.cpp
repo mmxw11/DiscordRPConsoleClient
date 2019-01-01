@@ -18,14 +18,13 @@ void SetDetailsCommand::executeCommand(std::string* args, unsigned argsLength) {
     }
     DiscordHandler& dhandler = DiscordHandler::getInstance();
     bool reset = sutils::equalsIgnoreCase(details, "reset");
-    bool connected = dhandler.setDetails(reset ? "" : details);
-    if (!connected) {
-        dhandler.printNotConnectedErrorMessage();
-        return;
-    }
+    bool updated = dhandler.setDetails(reset ? "" : details, true);
     if (reset) {
         std::cout << "Resetting details." << std::endl;
     } else {
         std::cout << "Updating details to \"" << details << "\"." << std::endl;
+    }
+    if (!updated) {
+        dhandler.printNotConnectedErrorMessage();
     }
 }

@@ -18,14 +18,13 @@ void SetStateCommand::executeCommand(std::string* args, unsigned argsLength) {
     }
     DiscordHandler& dhandler = DiscordHandler::getInstance();
     bool reset = sutils::equalsIgnoreCase(state, "reset");
-    bool connected = dhandler.setState(reset ? "" : state);
-    if (!connected) {
-        dhandler.printNotConnectedErrorMessage();
-        return;
-    }
+    bool updated = dhandler.setState(reset ? "" : state, true);
     if (reset) {
         std::cout << "Resetting state." << std::endl;
     } else {
         std::cout << "Updating state to \"" << state << "\"." << std::endl;
+    }
+    if (!updated) {
+        dhandler.printNotConnectedErrorMessage();
     }
 }

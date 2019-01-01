@@ -121,17 +121,23 @@ bool DiscordHandler::clearPresenceInfo() {
     return true;
 }
 
-bool DiscordHandler::setState(const std::string state) {
+bool DiscordHandler::setState(const std::string state, bool update) {
     presenceSettings.state = std::move(state);
+    if (!update) {
+        return false;
+    }
     return updatePresence();
 }
 
-bool DiscordHandler::setDetails(const std::string details) {
+bool DiscordHandler::setDetails(const std::string details, bool update) {
     presenceSettings.details = std::move(details);
+    if (!update) {
+        return false;
+    }
     return updatePresence();
 }
 
-bool DiscordHandler::setImage(const std::string image, bool large) {
+bool DiscordHandler::setImage(const std::string image, bool large, bool update) {
     if (!image.empty() && !large && presenceSettings.largeImageKey.empty()) {
         std::cout << "[TIP] Small image won't be displayed if large image is not set!" << std::endl;
     }
@@ -140,11 +146,13 @@ bool DiscordHandler::setImage(const std::string image, bool large) {
     } else {
         presenceSettings.smallImageKey = std::move(image);
     }
-    //std::cout << "set image called " << image << " lar" << large << std::endl;
-    return true;
+    if (!update) {
+        return false;
+    }
+    return updatePresence();
 }
 
-bool DiscordHandler::setImageText(const std::string text, bool large) {
+bool DiscordHandler::setImageText(const std::string text, bool large, bool update) {
     if (!text.empty() && ((large && presenceSettings.largeImageKey.empty()) || (!large && presenceSettings.smallImageKey.empty()))) {
         std::cout << "[TIP] Image tooltip won't be displayed if the image is not set!" << std::endl;
     }
@@ -153,8 +161,10 @@ bool DiscordHandler::setImageText(const std::string text, bool large) {
     } else {
         presenceSettings.smallImageText = std::move(text);
     }
-    //std::cout << "set image text called " << text << " lar" << large << std::endl;
-    return true;
+    if (!update) {
+        return false;
+    }
+    return updatePresence();
 }
 
 void DiscordHandler::printNotConnectedErrorMessage() const {
