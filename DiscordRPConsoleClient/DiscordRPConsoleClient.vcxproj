@@ -174,6 +174,7 @@
     <ClCompile Include="ReInitDiscordCommand.cpp" />
     <ClCompile Include="ClearPresenceCommand.cpp" />
     <ClCompile Include="SetDetailsCommand.cpp" />
+    <ClCompile Include="SetImageCommand.cpp" />
     <ClCompile Include="SetStateCommand.cpp" />
     <ClCompile Include="StringUtils.cpp" />
   </ItemGroup>
@@ -189,6 +190,7 @@
     <ClInclude Include="headers\ReInitDiscordCommand.h" />
     <ClInclude Include="headers\ClearPresenceCommand.h" />
     <ClInclude Include="headers\SetDetailsCommand.h" />
+    <ClInclude Include="headers\SetImageCommand.h" />
     <ClInclude Include="headers\SetStateCommand.h" />
     <ClInclude Include="headers\StringUtils.h" />
   </ItemGroup>

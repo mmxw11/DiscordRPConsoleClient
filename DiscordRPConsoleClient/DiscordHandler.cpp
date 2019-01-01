@@ -26,13 +26,20 @@ DiscordHandler::~DiscordHandler() {
 /**
 TODO:
 put command settings to header (leave implementation in cpp files)
-
+insert order for command args map
+something is likely leaking memory _CrtDumpMemoryLeaks() -> Detected memory leaks!;
 remove app id from init and own function for it (+ ask at startup)
 -------------------------------------------
 disconnect, connect (reinit) command [DONE]
 clear presence command [DONE]
 const char* state; [DONE]
 const char* details; [DONE]
+const char* largeImageKey; [DONE]
+const char* largeImageText; [DONE]
+
+----YOU MUST HAVE LARGE IMAGE TO DISPLAY THESE:---
+const char* smallImageKey; [DONE]
+const char* smallImageText; [DONE]
 -------------------------------------------
 
 DONT SEND ENDTIMESTAMP WITHOUT STATE OR YOUR DISCORD CRASHES!
@@ -41,13 +48,6 @@ int64_t endTimestamp;
 ONLY START -> Elpsed
 ONLY END -> Remaining
 BOTH -> Time left
-
-const char* largeImageKey;
-const char* largeImageText;
-
-----YOU MUST HAVE LARGE IMAGE TO DISPLAY THESE:---
-const char* smallImageKey;
-const char* smallImageText;
 --------------------------------------------------
 
 const char* partyId; [NOT REQUIRED]
@@ -94,6 +94,24 @@ bool DiscordHandler::uninitialize() {
     return true;
 }
 
+bool DiscordHandler::updatePresence() {
+    if (handlerState != State::CONNECTED) {
+        return false;
+    }
+    DiscordRichPresence discordPresence;
+    memset(&discordPresence, 0, sizeof(discordPresence));
+    discordPresence.state = presenceSettings.state.c_str();
+    discordPresence.details = presenceSettings.details.c_str();
+    discordPresence.largeImageKey = presenceSettings.largeImageKey.c_str();
+    discordPresence.largeImageText = presenceSettings.largeImageText.c_str();
+    discordPresence.smallImageKey = presenceSettings.smallImageKey.c_str();
+    discordPresence.smallImageText = presenceSettings.smallImageText.c_str();
+
+    //TODO: ADD VALUES
+    Discord_UpdatePresence(&discordPresence);
+    return true;
+}
+
 bool DiscordHandler::clearPresenceInfo() {
     presenceSettings.clearAll(); // clear previous values.
     if (handlerState != State::CONNECTED) {
@@ -113,22 +131,35 @@ bool DiscordHandler::setDetails(const std::string details) {
     return updatePresence();
 }
 
+bool DiscordHandler::setImage(const std::string image, bool large) {
+    if (!image.empty() && !large && presenceSettings.largeImageKey.empty()) {
+        std::cout << "[TIP] Small image won't be displayed if large image is not set!" << std::endl;
+    }
+    if (large) {
+        presenceSettings.largeImageKey = std::move(image);
+    } else {
+        presenceSettings.smallImageKey = std::move(image);
+    }
+    //std::cout << "set image called " << image << " lar" << large << std::endl;
+    return true;
+}
+
+bool DiscordHandler::setImageText(const std::string text, bool large) {
+    if (!text.empty() && ((large && presenceSettings.largeImageKey.empty()) || (!large && presenceSettings.smallImageKey.empty()))) {
+        std::cout << "[TIP] Image tooltip won't be displayed if the image is not set!" << std::endl;
+    }
+    if (large) {
+        presenceSettings.largeImageText = std::move(text);
+    } else {
+        presenceSettings.smallImageText = std::move(text);
+    }
+    //std::cout << "set image text called " << text << " lar" << large << std::endl;
+    return true;
+}
+
 void DiscordHandler::printNotConnectedErrorMessage() const {
     std::cout << "Cannot update to Discord because the client is not connected!" << std::endl;
     std::cout << "Try reinit Discord by calling \"reinitdiscord\" command." << std::endl;
-}
-
-bool DiscordHandler::updatePresence() {
-    if (handlerState != State::CONNECTED) {
-        return false;
-    }
-    DiscordRichPresence discordPresence;
-    memset(&discordPresence, 0, sizeof(discordPresence));
-    discordPresence.state = presenceSettings.state.c_str();
-    discordPresence.details = presenceSettings.details.c_str();
-    //TODO: ADD VALUES
-    Discord_UpdatePresence(&discordPresence);
-    return true;
 }
 
 DiscordHandler& DiscordHandler::getInstance() {

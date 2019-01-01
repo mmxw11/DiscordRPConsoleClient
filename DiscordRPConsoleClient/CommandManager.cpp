@@ -8,6 +8,7 @@
 #include "ClearPresenceCommand.h"
 #include "SetStateCommand.h"
 #include "SetDetailsCommand.h"
+#include "SetImageCommand.h"
 
 CommandManager::CommandManager(ApplicationManager& appManager) :
     appManager(appManager) {
@@ -26,6 +27,7 @@ void CommandManager::registerCommands() {
     registerCommand(std::make_unique<ClearPresenceCommand>());
     registerCommand(std::make_unique<SetStateCommand>());
     registerCommand(std::make_unique<SetDetailsCommand>());
+    registerCommand(std::make_unique<SetImageCommand>());
 }
 
 bool CommandManager::dispatchCommand(std::string& commandLineInput) {
