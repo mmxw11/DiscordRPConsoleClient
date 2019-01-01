@@ -10,6 +10,8 @@ struct PresenceSettings {
     std::string largeImageText;
     std::string smallImageKey;
     std::string smallImageText;
+    int partySize;
+    int partyMax;
 
     void clearAll() {
         memset(this, 0, sizeof(this));

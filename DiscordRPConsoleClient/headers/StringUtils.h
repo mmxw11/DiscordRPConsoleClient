@@ -15,6 +15,8 @@ namespace sutils {
 
     void toUpperCase(std::string& str);
 
+    bool str2Int(int& result, char const* str, int base = 0);
+
     /**
      * Parse command line arguments and adds the to the vector.
      * This is a modified version of https://stackoverflow.com/a/30518617/9816236

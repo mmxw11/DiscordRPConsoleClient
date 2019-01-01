@@ -29,6 +29,8 @@ put command settings to header (leave implementation in cpp files)
 insert order for command args map
 something is likely leaking memory _CrtDumpMemoryLeaks() -> Detected memory leaks!;
 remove app id from init and own function for it (+ ask at startup)
+time command
+cleaning
 -------------------------------------------
 disconnect, connect (reinit) command [DONE]
 clear presence command [DONE]
@@ -40,6 +42,14 @@ const char* largeImageText; [DONE]
 ----YOU MUST HAVE LARGE IMAGE TO DISPLAY THESE:---
 const char* smallImageKey; [DONE]
 const char* smallImageText; [DONE]
+
+const char* partyId; [NOT REQUIRED]
+
+----YOU MUST SEND STATE TO DISPLAY THESE:---
+MUST BE SENT AT THE SAME TIME!
+int partySize, [DONE]
+int partyMax; [DONE]
+
 -------------------------------------------
 
 DONT SEND ENDTIMESTAMP WITHOUT STATE OR YOUR DISCORD CRASHES!
@@ -50,12 +60,6 @@ ONLY END -> Remaining
 BOTH -> Time left
 --------------------------------------------------
 
-const char* partyId; [NOT REQUIRED]
-
-----YOU MUST SEND STATE TO DISPLAY THESE:---
-MUST BE SENT AT THE SAME TIME!
-int partySize,
-int partyMax;
 --------------------------------------------------
 
  const char* matchSecret; [NOT USED]
@@ -102,12 +106,19 @@ bool DiscordHandler::updatePresence() {
     memset(&discordPresence, 0, sizeof(discordPresence));
     discordPresence.state = presenceSettings.state.c_str();
     discordPresence.details = presenceSettings.details.c_str();
+    // int64_t startTimestamp
+    // int64_t endTimestamp
     discordPresence.largeImageKey = presenceSettings.largeImageKey.c_str();
     discordPresence.largeImageText = presenceSettings.largeImageText.c_str();
     discordPresence.smallImageKey = presenceSettings.smallImageKey.c_str();
     discordPresence.smallImageText = presenceSettings.smallImageText.c_str();
-
-    //TODO: ADD VALUES
+    //const char* partyId [NOT USED]
+    discordPresence.partySize = presenceSettings.partySize;
+    discordPresence.partyMax = presenceSettings.partyMax;
+    //const char* matchSecret [NOT USED]
+    //const char* joinSecret [NOT USED]
+    //const char* spectateSecret [NOT USED]
+    //int8_t instance [NOT USED]
     Discord_UpdatePresence(&discordPresence);
     return true;
 }
@@ -122,7 +133,7 @@ bool DiscordHandler::clearPresenceInfo() {
 }
 
 bool DiscordHandler::setState(const std::string state, bool update) {
-    presenceSettings.state = std::move(state);
+    presenceSettings.state = state;
     if (!update) {
         return false;
     }
@@ -130,7 +141,7 @@ bool DiscordHandler::setState(const std::string state, bool update) {
 }
 
 bool DiscordHandler::setDetails(const std::string details, bool update) {
-    presenceSettings.details = std::move(details);
+    presenceSettings.details = details;
     if (!update) {
         return false;
     }
@@ -142,9 +153,9 @@ bool DiscordHandler::setImage(const std::string image, bool large, bool update) 
         std::cout << "[TIP] Small image won't be displayed if large image is not set!" << std::endl;
     }
     if (large) {
-        presenceSettings.largeImageKey = std::move(image);
+        presenceSettings.largeImageKey = image;
     } else {
-        presenceSettings.smallImageKey = std::move(image);
+        presenceSettings.smallImageKey = image;
     }
     if (!update) {
         return false;
@@ -157,10 +168,22 @@ bool DiscordHandler::setImageText(const std::string text, bool large, bool updat
         std::cout << "[TIP] Image tooltip won't be displayed if the image is not set!" << std::endl;
     }
     if (large) {
-        presenceSettings.largeImageText = std::move(text);
+        presenceSettings.largeImageText = text;
     } else {
-        presenceSettings.smallImageText = std::move(text);
+        presenceSettings.smallImageText = text;
     }
+    if (!update) {
+        return false;
+    }
+    return updatePresence();
+}
+
+bool DiscordHandler::setPartySize(const int partySize, const int partyMax, bool update) {
+    if (partySize != -1 && presenceSettings.state.empty()) { // partySize: -1 = reset
+        std::cout << "[TIP] Party size won't be displayed if state is not set!" << std::endl;
+    }
+    presenceSettings.partySize = partySize == -1 ? 0 : partySize;
+    presenceSettings.partyMax = partyMax == 1 ? 0 : partyMax;
     if (!update) {
         return false;
     }

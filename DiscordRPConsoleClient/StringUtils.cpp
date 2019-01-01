@@ -38,6 +38,25 @@ namespace sutils {
         std::transform(str.begin(), str.end(), str.begin(), ::toupper);
     }
 
+    bool str2Int(int& result, char const* str, int base) {
+        char* end;
+        errno = 0;
+        long value = strtol(str, &end, base);
+        if ((errno == ERANGE && value == LONG_MAX) || value > INT_MAX) {
+            //overflow
+            return false;
+        }
+        if ((errno == ERANGE && value == LONG_MIN) || value < INT_MIN) {
+            //underflow
+            return false;
+        }
+        if (*str == '\0' || *end != '\0') {
+            return false;
+        }
+        result = value;
+        return true;
+    }
+
     void parseCommandLineArgs(const std::string& line, std::vector<std::string>& argsStorage) {
         const char SPACE = ' ', TAB = '\t';
         const char  DQUOTE = '\"', SQUOTE = '\'';

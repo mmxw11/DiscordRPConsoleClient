@@ -22,11 +22,11 @@ public:
     bool setDetails(const std::string details, bool update);
     bool setImage(const std::string image, bool large, bool update);
     bool setImageText(const std::string text, bool large, bool update);
+    bool setPartySize(const int partySize, const int partyMax, bool update);
 
     //TODO:
     void setStartTimestamp();
     void setEndTimestamp();
-    void setPartyInfo(const int partySize, const int partyMax); //TODO CHECK IF STATE SET!
 
     void printNotConnectedErrorMessage() const;
 
