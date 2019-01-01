@@ -132,23 +132,17 @@ bool DiscordHandler::clearPresenceInfo() {
     return true;
 }
 
-bool DiscordHandler::setState(const std::string state, bool update) {
+bool DiscordHandler::setState(const std::string& state, bool update) {
     presenceSettings.state = state;
-    if (!update) {
-        return false;
-    }
-    return updatePresence();
+    return update ? updatePresence() : false;
 }
 
-bool DiscordHandler::setDetails(const std::string details, bool update) {
+bool DiscordHandler::setDetails(const std::string& details, bool update) {
     presenceSettings.details = details;
-    if (!update) {
-        return false;
-    }
-    return updatePresence();
+    return update ? updatePresence() : false;
 }
 
-bool DiscordHandler::setImage(const std::string image, bool large, bool update) {
+bool DiscordHandler::setImage(const std::string& image, bool large, bool update) {
     if (!image.empty() && !large && presenceSettings.largeImageKey.empty()) {
         std::cout << "[TIP] Small image won't be displayed if large image is not set!" << std::endl;
     }
@@ -157,13 +151,10 @@ bool DiscordHandler::setImage(const std::string image, bool large, bool update) 
     } else {
         presenceSettings.smallImageKey = image;
     }
-    if (!update) {
-        return false;
-    }
-    return updatePresence();
+    return update ? updatePresence() : false;
 }
 
-bool DiscordHandler::setImageText(const std::string text, bool large, bool update) {
+bool DiscordHandler::setImageText(const std::string& text, bool large, bool update) {
     if (!text.empty() && ((large && presenceSettings.largeImageKey.empty()) || (!large && presenceSettings.smallImageKey.empty()))) {
         std::cout << "[TIP] Image tooltip won't be displayed if the image is not set!" << std::endl;
     }
@@ -172,10 +163,7 @@ bool DiscordHandler::setImageText(const std::string text, bool large, bool updat
     } else {
         presenceSettings.smallImageText = text;
     }
-    if (!update) {
-        return false;
-    }
-    return updatePresence();
+    return update ? updatePresence() : false;
 }
 
 bool DiscordHandler::setPartySize(const int partySize, const int partyMax, bool update) {
@@ -184,10 +172,7 @@ bool DiscordHandler::setPartySize(const int partySize, const int partyMax, bool 
     }
     presenceSettings.partySize = partySize == -1 ? 0 : partySize;
     presenceSettings.partyMax = partyMax == 1 ? 0 : partyMax;
-    if (!update) {
-        return false;
-    }
-    return updatePresence();
+    return update ? updatePresence() : false;
 }
 
 void DiscordHandler::printNotConnectedErrorMessage() const {

@@ -2,9 +2,9 @@
 
 #include "ICommand.h"
 
-class SetPartySizeCommand : public ICommand {
+class PartySizeCommand : public ICommand {
 
 public:
-    SetPartySizeCommand();
+    PartySizeCommand();
     void executeCommand(std::string* args, unsigned argsLength) override;
 };

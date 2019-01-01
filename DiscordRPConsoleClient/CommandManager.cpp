@@ -6,10 +6,10 @@
 #include "HelpCommand.h"
 #include "ReInitDiscordCommand.h"
 #include "ClearPresenceCommand.h"
-#include "SetStateCommand.h"
-#include "SetDetailsCommand.h"
-#include "SetImageCommand.h"
-#include "SetPartySizeCommand.h"
+#include "StateCommand.h"
+#include "DetailsCommand.h"
+#include "ImageCommand.h"
+#include "PartySizeCommand.h"
 
 CommandManager::CommandManager(ApplicationManager& appManager) :
     appManager(appManager) {
@@ -26,10 +26,10 @@ void CommandManager::registerCommands() {
     // Discord specific commands.
     registerCommand(std::make_unique<ReInitDiscordCommand>());
     registerCommand(std::make_unique<ClearPresenceCommand>());
-    registerCommand(std::make_unique<SetStateCommand>());
-    registerCommand(std::make_unique<SetDetailsCommand>());
-    registerCommand(std::make_unique<SetImageCommand>());
-    registerCommand(std::make_unique<SetPartySizeCommand>());
+    registerCommand(std::make_unique<StateCommand>());
+    registerCommand(std::make_unique<DetailsCommand>());
+    registerCommand(std::make_unique<ImageCommand>());
+    registerCommand(std::make_unique<PartySizeCommand>());
 }
 
 bool CommandManager::dispatchCommand(std::string& commandLineInput) {

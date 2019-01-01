@@ -3,10 +3,10 @@
 #include "ICommand.h"
 #include <unordered_map>
 
-class SetImageCommand : public ICommand {
+class ImageCommand : public ICommand {
 
 public:
-    SetImageCommand();
+    ImageCommand();
     void executeCommand(std::string* args, unsigned argsLength) override;
 private:
     bool parseImageOptions(std::string* args, unsigned argsLength) const;

@@ -2,9 +2,9 @@
 
 #include "ICommand.h"
 
-class SetStateCommand : public ICommand {
+class DetailsCommand : public ICommand {
 
 public:
-    SetStateCommand();
+    DetailsCommand();
     void executeCommand(std::string* args, unsigned argsLength) override;
 };

@@ -173,10 +173,10 @@
     </ClCompile>
     <ClCompile Include="ReInitDiscordCommand.cpp" />
     <ClCompile Include="ClearPresenceCommand.cpp" />
-    <ClCompile Include="SetDetailsCommand.cpp" />
-    <ClCompile Include="SetImageCommand.cpp" />
-    <ClCompile Include="SetPartySizeCommand.cpp" />
-    <ClCompile Include="SetStateCommand.cpp" />
+    <ClCompile Include="DetailsCommand.cpp" />
+    <ClCompile Include="ImageCommand.cpp" />
+    <ClCompile Include="PartySizeCommand.cpp" />
+    <ClCompile Include="StateCommand.cpp" />
     <ClCompile Include="StringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -190,10 +190,10 @@
     <ClInclude Include="headers\PresenceSettings.h" />
     <ClInclude Include="headers\ReInitDiscordCommand.h" />
     <ClInclude Include="headers\ClearPresenceCommand.h" />
-    <ClInclude Include="headers\SetDetailsCommand.h" />
-    <ClInclude Include="headers\SetImageCommand.h" />
-    <ClInclude Include="headers\SetPartySizeCommand.h" />
-    <ClInclude Include="headers\SetStateCommand.h" />
+    <ClInclude Include="headers\DetailsCommand.h" />
+    <ClInclude Include="headers\ImageCommand.h" />
+    <ClInclude Include="headers\PartySizeCommand.h" />
+    <ClInclude Include="headers\StateCommand.h" />
     <ClInclude Include="headers\StringUtils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

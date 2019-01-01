@@ -1,15 +1,15 @@
 #include "pch.h"
 
-#include "SetDetailsCommand.h"
+#include "DetailsCommand.h"
 #include "DiscordHandler.h"
 #include "StringUtils.h"
 
-SetDetailsCommand::SetDetailsCommand() :
-    ICommand("setdetails", "Set what the user is currently doing. (\"Competitive - Captain's Mode\", \"In Queue\", \"Unranked PvP\", \"reset\")") {
-    addArgument("details", true);
+DetailsCommand::DetailsCommand() :
+    ICommand("details", "Set what the user is currently doing. (\"Competitive - Captain's Mode\", \"In Queue\", \"Unranked PvP\", \"reset\")") {
+    addArgument("details/reset", true);
 }
 
-void SetDetailsCommand::executeCommand(std::string* args, unsigned argsLength) {
+void DetailsCommand::executeCommand(std::string* args, unsigned argsLength) {
     std::string& details = args[0];
     sutils::trim(details);
     if (details.empty()) {

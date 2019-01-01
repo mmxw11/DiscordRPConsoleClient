@@ -41,16 +41,16 @@
     <ClCompile Include="ClearPresenceCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SetDetailsCommand.cpp">
+    <ClCompile Include="DetailsCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SetStateCommand.cpp">
+    <ClCompile Include="ImageCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SetImageCommand.cpp">
+    <ClCompile Include="PartySizeCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SetPartySizeCommand.cpp">
+    <ClCompile Include="StateCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -85,19 +85,19 @@
     <ClInclude Include="headers\ClearPresenceCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\SetDetailsCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="headers\PresenceSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\SetStateCommand.h">
+    <ClInclude Include="headers\DetailsCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\SetImageCommand.h">
+    <ClInclude Include="headers\ImageCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\SetPartySizeCommand.h">
+    <ClInclude Include="headers\PartySizeCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\StateCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

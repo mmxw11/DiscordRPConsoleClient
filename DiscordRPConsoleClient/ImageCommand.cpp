@@ -1,19 +1,18 @@
 #include "pch.h"
 
-#include "SetImageCommand.h"
+#include "ImageCommand.h"
 #include "DiscordHandler.h"
 #include "StringUtils.h"
 #include <set>
-#include <unordered_map>
 
-SetImageCommand::SetImageCommand() :
-    ICommand("setimage", "Set images for profile artwork + image tooltip details. (\"--largeimage/--smallimage --image image_name --tooltip image_info\")") {
+ImageCommand::ImageCommand() :
+    ICommand("image", "Set images for profile artwork + image tooltip details. (\"sample_image This is displayed when you however\")") {
     addArgument("--largeimage/--smallimage", true);
     addArgument("--image image_name/reset", false);
-    addArgument("--tooltip image_info/reset", false);
+    addArgument("--tooltip image_tooltip/reset", false);
 }
 
-void SetImageCommand::executeCommand(std::string* args, unsigned argsLength) {
+void ImageCommand::executeCommand(std::string* args, unsigned argsLength) {
     std::string& type = args[0];
     sutils::trim(type);
     sutils::toLowerCase(type);
@@ -26,7 +25,7 @@ void SetImageCommand::executeCommand(std::string* args, unsigned argsLength) {
     }
 }
 
-bool SetImageCommand::parseImageOptions(std::string* args, unsigned argsLength) const {
+bool ImageCommand::parseImageOptions(std::string* args, unsigned argsLength) const {
     std::set<std::string> imageTypes;
     std::unordered_map<std::string, std::string*> options;
     const std::string* lastImageType = nullptr;
@@ -89,7 +88,7 @@ bool SetImageCommand::parseImageOptions(std::string* args, unsigned argsLength) 
     return updateRequired;
 }
 
-bool SetImageCommand::setImageOptions(const std::string& imageType, const std::unordered_map<std::string, std::string*>& options) const {
+bool ImageCommand::setImageOptions(const std::string& imageType, const std::unordered_map<std::string, std::string*>& options) const {
     const bool large = imageType == "--largeimage";
     const std::string message = "\"" + std::string(large ? "Large" : "Small").append(" image\"");
     DiscordHandler& dhandler = DiscordHandler::getInstance();
@@ -113,7 +112,7 @@ bool SetImageCommand::setImageOptions(const std::string& imageType, const std::u
     return updateRequired;
 }
 
-bool SetImageCommand::shouldUpdateImageData(std::string& data, const std::unordered_map<std::string, std::string*>& options) const {
+bool ImageCommand::shouldUpdateImageData(std::string& data, const std::unordered_map<std::string, std::string*>& options) const {
     auto key = options.find(data);
     if (key == options.end()) {
         // key not found.
@@ -127,7 +126,7 @@ bool SetImageCommand::shouldUpdateImageData(std::string& data, const std::unorde
     return true;
 }
 
-void SetImageCommand::sendUpdateFeedback(const std::string& str, const bool& reset) const {
+void ImageCommand::sendUpdateFeedback(const std::string& str, const bool& reset) const {
     if (reset) {
         std::cout << "Resetting " << str << "." << std::endl;
     } else {
