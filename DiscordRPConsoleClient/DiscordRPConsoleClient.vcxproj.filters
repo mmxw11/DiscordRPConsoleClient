@@ -41,7 +41,10 @@
     <ClCompile Include="ClearPresenceCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SetUserStatusCommand.cpp">
+    <ClCompile Include="SetDetailsCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetStateCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -76,7 +79,13 @@
     <ClInclude Include="headers\ClearPresenceCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\SetUserStatusCommand.h">
+    <ClInclude Include="headers\SetDetailsCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\PresenceSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\SetStateCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

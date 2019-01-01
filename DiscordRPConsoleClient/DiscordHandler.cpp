@@ -12,7 +12,7 @@
 #pragma comment(lib, "discord-rpc-win32.lib")
 #endif
 
-DiscordRichPresence DiscordHandler::discordPresence;
+//DiscordRichPresence DiscordHandler::discordPresence;
 
 DiscordHandler::DiscordHandler() :
     handlerState(State::UNINITIALIZED) {
@@ -25,13 +25,15 @@ DiscordHandler::~DiscordHandler() {
 
 /**
 TODO:
-remove app id from init and own function for it (+ ask at startup)
-disconnect command
-connect command
-reset presence command
+put command settings to header (leave implementation in cpp files)
 
-const char* state;
-const char* details;
+remove app id from init and own function for it (+ ask at startup)
+-------------------------------------------
+disconnect, connect (reinit) command [DONE]
+clear presence command [DONE]
+const char* state; [DONE]
+const char* details; [DONE]
+-------------------------------------------
 
 DONT SEND ENDTIMESTAMP WITHOUT STATE OR YOUR DISCORD CRASHES!
 int64_t startTimestamp;
@@ -93,7 +95,7 @@ bool DiscordHandler::uninitialize() {
 }
 
 bool DiscordHandler::clearPresenceInfo() {
-    memset(&discordPresence, 0, sizeof(discordPresence)); // clear previous values.
+    presenceSettings.clearAll(); // clear previous values.
     if (handlerState != State::CONNECTED) {
         return false;
     }
@@ -101,8 +103,13 @@ bool DiscordHandler::clearPresenceInfo() {
     return true;
 }
 
-bool DiscordHandler::setStatus(const char* status) {
-    discordPresence.state = status;
+bool DiscordHandler::setState(const std::string state) {
+    presenceSettings.state = std::move(state);
+    return updatePresence();
+}
+
+bool DiscordHandler::setDetails(const std::string details) {
+    presenceSettings.details = std::move(details);
     return updatePresence();
 }
 
@@ -115,6 +122,11 @@ bool DiscordHandler::updatePresence() {
     if (handlerState != State::CONNECTED) {
         return false;
     }
+    DiscordRichPresence discordPresence;
+    memset(&discordPresence, 0, sizeof(discordPresence));
+    discordPresence.state = presenceSettings.state.c_str();
+    discordPresence.details = presenceSettings.details.c_str();
+    //TODO: ADD VALUES
     Discord_UpdatePresence(&discordPresence);
     return true;
 }

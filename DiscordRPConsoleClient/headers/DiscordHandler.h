@@ -2,9 +2,7 @@
 
 #include <chrono>
 #include <atomic>
-//#include "discord-rpc/discord_rpc.h"
-
-struct DiscordRichPresence;
+#include "PresenceSettings.h"
 
 class DiscordHandler {
 
@@ -19,11 +17,10 @@ public:
     bool initialize();
     bool uninitialize();
     bool clearPresenceInfo();
-    bool setStatus(const char* status);
+    bool setState(const std::string state);
+    bool setDetails(const std::string details);
 
     //TODO:
-    void setDetails(const std::string details);
-
     void setStartTimestamp();
     void setEndTimestamp();
 
@@ -47,6 +44,6 @@ private:
     static void handleDiscordError(int errcode, const char* message);
     // variables
     std::atomic<State> handlerState;
-    static DiscordRichPresence discordPresence;
+    PresenceSettings presenceSettings;
     std::chrono::steady_clock::time_point lastCallbackUpdate;
 };
