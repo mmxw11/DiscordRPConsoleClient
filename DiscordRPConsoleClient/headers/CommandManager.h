@@ -2,6 +2,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
 #include <memory>
 #include "ICommand.h"
 
@@ -17,8 +18,9 @@ public:
     void registerCommands();
     bool dispatchCommand(std::string& commandLineInput);
     const ICommand* getCommand(const std::string& commandName);
-    const std::unordered_map<std::string, std::unique_ptr<ICommand>>& getCommands() const;
+    const std::vector<std::string>& getCommandNames() const;
 private:
     ApplicationManager& appManager;
+    std::vector<std::string> commandNames;
     std::unordered_map<std::string, std::unique_ptr<ICommand>> commands;
 };

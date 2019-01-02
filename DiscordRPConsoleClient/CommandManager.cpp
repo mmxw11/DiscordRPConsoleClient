@@ -17,6 +17,7 @@ CommandManager::CommandManager(ApplicationManager& appManager) :
 }
 
 void CommandManager::registerCommand(std::unique_ptr<ICommand> command) {
+    commandNames.emplace_back(command->getCommandName());
     commands.emplace(command->getCommandName(), std::move(command));
 }
 
@@ -71,6 +72,6 @@ const ICommand* CommandManager::getCommand(const std::string& commandName) {
     return it->second.get();
 }
 
-const std::unordered_map<std::string, std::unique_ptr<ICommand>>& CommandManager::getCommands() const {
-    return commands;
+const std::vector<std::string>& CommandManager::getCommandNames() const {
+    return commandNames;
 }

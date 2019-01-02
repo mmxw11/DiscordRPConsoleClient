@@ -21,11 +21,10 @@ void HelpCommand::executeCommand(std::string* args, unsigned argsLength) {
         }
     } else {
         std::cout << "Use \"" << getCommandName() << " command-name\" for more information on a specific command." << std::endl;
-        for (auto& entry : commandManager.getCommands()) {
-            const std::unique_ptr<ICommand>& icommand = entry.second;
-            std::string icommandName = icommand->getCommandName();
-            sutils::addPaddingToRight(icommandName, 20);
-            std::cout << icommandName << icommand->getDescription() << std::endl;
+        for (std::string commandName : commandManager.getCommandNames()) { // don't take as reference so we can add padding to it. 
+            const std::string& description = commandManager.getCommand(commandName)->getDescription();
+            sutils::addPaddingToRight(commandName, 20);
+            std::cout << commandName << description << std::endl;
         }
     }
 }
