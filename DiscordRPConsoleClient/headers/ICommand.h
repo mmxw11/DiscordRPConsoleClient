@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
+#include <vector>
 
 class ApplicationManager; // forward declaration
 
@@ -17,13 +17,18 @@ public:
     const std::string& getCommandName() const;
     const std::string& getDescription() const;
     std::string getUsage() const;
+    struct CommandArgument {
+        std::string name;
+        bool required;
+        CommandArgument(std::string name, bool required) : name(name), required(required) {}
+    };
     int getRequiredArgumentsCount() const;
-    const std::unordered_map<std::string, bool>& getArguments() const;
+    const std::vector<CommandArgument>& getArguments() const;
 protected:
     ApplicationManager* appManager;
     void addArgument(std::string arg, bool required);
 private:
     std::string name;
     std::string description;
-    std::unordered_map<std::string, bool> arguments;
+    std::vector<CommandArgument> arguments;
 };

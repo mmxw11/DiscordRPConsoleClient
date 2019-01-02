@@ -16,7 +16,7 @@ ICommand::ICommand(ApplicationManager* appManager, std::string name, std::string
 }
 
 void ICommand::addArgument(std::string arg, bool required) {
-    arguments.emplace(arg, required);
+    arguments.emplace_back(arg, required);
 }
 
 const std::string& ICommand::getCommandName() const {
@@ -26,7 +26,7 @@ const std::string& ICommand::getCommandName() const {
 std::string ICommand::getUsage() const {
     std::string usage = name;
     for (auto& entry : arguments) {
-        usage += " " + (entry.second ? "<" + entry.first + ">" : "[" + entry.first + "]");
+        usage += " " + (entry.required ? "<" + entry.name + ">" : "[" + entry.name + "]");
     }
     return usage;
 }
@@ -37,11 +37,11 @@ const std::string& ICommand::getDescription() const {
 
 int ICommand::getRequiredArgumentsCount() const {
     int count = static_cast<int>(std::count_if(arguments.begin(), arguments.end(), [](auto& entry) {
-        return entry.second;
+        return entry.required;
     }));
     return count;
 }
 
-const std::unordered_map<std::string, bool>& ICommand::getArguments() const {
+const std::vector<ICommand::CommandArgument>& ICommand::getArguments() const {
     return arguments;
 }
