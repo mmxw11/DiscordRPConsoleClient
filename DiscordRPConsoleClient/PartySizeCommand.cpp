@@ -30,12 +30,12 @@ void PartySizeCommand::executeCommand(std::string* args, unsigned argsLength) {
         }
         int partySize;
         if (!sutils::str2Int(partySize, args[1].c_str())) {
-            std::cout << "Does " << args[1] << " look like an integer to you?" << std::endl;
+            std::cout << "Does \"" << args[1] << "\" look like an integer to you?" << std::endl;
             return;
         }
         int maxPlayers;
         if (!sutils::str2Int(maxPlayers, args[2].c_str())) {
-            std::cout << "Does " << args[2] << " look like an integer to you?" << std::endl;
+            std::cout << "Does \"" << args[2] << "\" look like an integer to you?" << std::endl;
             return;
         }
         if (partySize <= 0 || maxPlayers <= 0) {

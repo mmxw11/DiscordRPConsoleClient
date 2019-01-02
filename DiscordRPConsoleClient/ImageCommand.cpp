@@ -8,14 +8,14 @@
 ImageCommand::ImageCommand() :
     ICommand("image", "Set images for profile artwork + image tooltip details. (\"sample_image This is displayed when you however\")") {
     addArgument("--largeimage/--smallimage", true);
-    addArgument("--image image_name/reset", false);
-    addArgument("--tooltip image_tooltip/reset", false);
+    addArgument("--image", false);
+    addArgument("image_name", false);
+    addArgument("--tooltip", false);
+    addArgument("image_tooltip", false);
+    addArgument("reset", false);
 }
 
 void ImageCommand::executeCommand(std::string* args, unsigned argsLength) {
-    std::string& type = args[0];
-    sutils::trim(type);
-    sutils::toLowerCase(type);
     DiscordHandler& dhandler = DiscordHandler::getInstance();
     bool updateRequired = parseImageOptions(args, argsLength);
     if (updateRequired) {
