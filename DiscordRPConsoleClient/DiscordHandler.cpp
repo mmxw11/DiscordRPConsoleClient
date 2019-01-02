@@ -2,7 +2,7 @@
 
 #include "DiscordHandler.h"
 #include "discord-rpc/discord_rpc.h"
-
+#include <assert.h>
 // link discord library
 #if defined(_WIN64)
 #pragma comment(lib, "discord-rpc-win64.lib")
@@ -25,7 +25,6 @@ DiscordHandler::~DiscordHandler() {
 TODO:
 32-bit build
 something is likely leaking memory _CrtDumpMemoryLeaks() -> Detected memory leaks!;
-remove app id from init and own function for it (+ ask at startup)
 cleaning
 -------------------------------------------
 disconnect, connect (reinit) command [DONE]
@@ -71,17 +70,21 @@ int8_t instance; [NOT USED]
 //std::cout << "Tried to uninitialize handler when it's alreay uninitialized!" << std::endl;
  //assert((this->handlerState == State::UNINITIALIZED  && "Tried to initialize handler it's already initialized!"));
 
+void DiscordHandler::setApplicationId(const std::string& applicationId) {
+    this->applicationId = applicationId;
+}
+
 bool DiscordHandler::initialize() {
     if (handlerState != State::UNINITIALIZED) {
         return false;
     }
+    assert(!applicationId.empty());
     DiscordEventHandlers handlers;
     memset(&handlers, 0, sizeof(handlers));
     handlers.ready = handleDiscordReady;
     handlers.disconnected = handleDiscordDisconnected;
     handlers.errored = handleDiscordError;
-
-    Discord_Initialize("528564887992139817", &handlers, 1, NULL);
+    Discord_Initialize(applicationId.c_str(), &handlers, 1, NULL);
     std::cout << "Waiting for Discord connection (Ctrl + C to terminate)..." << std::endl;
     this->handlerState = State::INITIALIZED;
     return true;

@@ -11,18 +11,19 @@ extern "C" void Discord_RunCallbacks();
 ApplicationManager::ApplicationManager() :
     commandManager(*this),
     discordHandler(DiscordHandler::getInstance()) {
+    commandManager.registerCommands();
 }
 
 ApplicationManager::~ApplicationManager() {
     shutdown();
 }
 
-void ApplicationManager::runApplication() {
+void ApplicationManager::runApplication(const std::string& applicationId) {
     if (running) {
         return;
     }
-    commandManager.registerCommands();
-    bool success = discordHandler.initialize(); //TODO: HARDCODED VALUE
+    discordHandler.setApplicationId(applicationId);
+    bool success = discordHandler.initialize();
     assert(success);
     this->running = true;
     // start console input thread.

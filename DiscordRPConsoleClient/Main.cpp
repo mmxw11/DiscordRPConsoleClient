@@ -20,24 +20,51 @@ static BOOL WINAPI ctrlHandler(DWORD dwCtrlType) {
     return TRUE;
 }
 
-int main() {
-    // set handler for shutdown.
+int main(int argc, char** argv) {
+    std::cout << "DiscordRPConsole client [Version 1.0]" << std::endl;
+    std::cout << "Control Discord Rich Presence easily from command line.\n" << std::endl;
+    // Set handler for shutdown.
     if (!SetConsoleCtrlHandler(ctrlHandler, TRUE)) {
         printf("\nERROR: Could not set control handler.");
         return 1;
-    }//MAY TAKE A WHILE TO UPDATE WARNING
-    //find discord instance
-    //application id
-    std::cout << "Use \"HELP\" command to see a list of available commands." << std::endl;
-    std::cout << std::endl;
-    {
-        //TODO: do something about console getting overridden
-        ApplicationManager appManagerInstance;
-        ::appManager = &appManagerInstance;
-        appManagerInstance.runApplication();
-        //  appManagerInstance.shutdown();
     }
-    std::cout << "Bye" << std::endl;
+    // Parse applicationId.
+    std::string applicationId;
+    bool hasApplicationCmdArg = false;
+    // Check command line args.
+    for (int i = 0; i < argc; i++) {
+        if (std::string(argv[i]) != "--applicationId") {
+            continue;
+        }
+        if (i + 1 < argc) {
+            hasApplicationCmdArg = true;
+            applicationId = std::string(argv[i + 1]);
+        }
+        break;
+    }
+    if (!hasApplicationCmdArg) {
+        // Ask for applicationId.
+        std::cout << "You can also pass the applicationId as a command line argument using the --applicationId command option." << std::endl;
+        std::cout << "Enter the applicationId: ";
+        std::getline(std::cin, applicationId);
+        if (!std::cin.good()) {
+            printf("\nERROR: Unexpected input.");
+            return 1;
+        }
+        std::cout << std::endl;
+    }
+    if (applicationId[0] == '\0') {
+        printf("\nERROR: applicationId cannot be empty!");
+        return 1;
+    }
+    // Initialize everything.
+    std::cout << "Connecting to Discord with the applicationId of \"" << applicationId << "\".\nIf nothing happens check the spelling and make sure your Discord client is running." << std::endl;
+    std::cout << "\nUse \"HELP\" command to see a list of available commands." << std::endl;
+    ApplicationManager appManagerInstance;
+    ::appManager = &appManagerInstance;
+    appManagerInstance.runApplication(applicationId);
+    std::cout << "Bye." << std::endl;
+
     _CrtDumpMemoryLeaks();
     return 0;
 }

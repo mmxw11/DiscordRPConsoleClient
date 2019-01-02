@@ -11,7 +11,7 @@ public:
     ApplicationManager(const ApplicationManager&) = delete;
     ApplicationManager& operator=(const ApplicationManager&) = delete;
     ~ApplicationManager();
-    void runApplication();
+    void runApplication(const std::string& applicationId);
     void shutdown();
     CommandManager& getCommandManager();
     DiscordHandler& getDiscordHandler();

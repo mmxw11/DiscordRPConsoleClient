@@ -14,6 +14,7 @@ public:
         CONNECTED,
         UNINITIALIZED
     };
+    void setApplicationId(const std::string& applicationId);
     bool initialize();
     bool uninitialize();
     bool updatePresence();
@@ -37,6 +38,7 @@ private:
     static void handleDiscordDisconnected(int errcode, const char* message);
     static void handleDiscordError(int errcode, const char* message);
     // variables
+    std::string applicationId;
     std::atomic<State> handlerState;
     PresenceSettings presenceSettings;
     std::chrono::steady_clock::time_point lastCallbackUpdate;
