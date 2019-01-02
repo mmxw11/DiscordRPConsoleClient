@@ -43,7 +43,7 @@ void ApplicationManager::runApplication() {
 
 void ApplicationManager::runConsoleInputLoop() {
     while (running) {
-        if (discordHandler.getHandlerState() == DiscordHandler::INITIALIZED) {
+        if (discordHandler.getHandlerState() == DiscordHandler::State::INITIALIZED) {
             std::this_thread::sleep_for(std::chrono::seconds(2));
             continue;
         }

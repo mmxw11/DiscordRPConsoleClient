@@ -24,7 +24,6 @@ DiscordHandler::~DiscordHandler() {
 /**
 TODO:
 32-bit build
-put command settings to header (leave implementation in cpp files)
 insert order for command args map + map in cmd manager
 something is likely leaking memory _CrtDumpMemoryLeaks() -> Detected memory leaks!;
 remove app id from init and own function for it (+ ask at startup)

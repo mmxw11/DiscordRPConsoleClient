@@ -4,11 +4,6 @@
 #include "ApplicationManager.h"
 #include "StringUtils.h"
 
-HelpCommand::HelpCommand(ApplicationManager* appManager) :
-    ICommand(appManager, "help", "Display help about the commands.") {
-    addArgument("command-name", false);
-}
-
 void HelpCommand::executeCommand(std::string* args, unsigned argsLength) {
     CommandManager& commandManager = appManager->getCommandManager();
     if (argsLength > 0) {

@@ -4,13 +4,6 @@
 #include "DiscordHandler.h"
 #include "StringUtils.h"
 
-PartySizeCommand::PartySizeCommand() :
-    ICommand("partysize", "Set the user's party size. (\"10 of 10\", \"5 of 8\")") {
-    addArgument("set/reset", true);
-    addArgument("partySize", false);
-    addArgument("partyMax", false);
-}
-
 void PartySizeCommand::executeCommand(std::string* args, unsigned argsLength) {
     const std::string& action = args[0];
     bool reset = sutils::equalsIgnoreCase(action, "reset");

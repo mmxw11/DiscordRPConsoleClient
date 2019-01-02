@@ -4,11 +4,6 @@
 #include "DiscordHandler.h"
 #include "StringUtils.h"
 
-StateCommand::StateCommand() :
-    ICommand("state", "Set the user's current party status. (\"Looking to Play\", \"Playing Solo\", \"In a Group\")") {
-    addArgument("state/reset", true);
-}
-
 void StateCommand::executeCommand(std::string* args, unsigned argsLength) {
     std::string& state = args[0];
     sutils::trim(state);

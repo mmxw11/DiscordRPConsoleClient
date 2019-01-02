@@ -5,16 +5,6 @@
 #include "StringUtils.h"
 #include <set>
 
-ImageCommand::ImageCommand() :
-    ICommand("image", "Set images for profile artwork + image tooltip details. (\"sample_image This is displayed when you however\")") {
-    addArgument("--largeimage/--smallimage", true);
-    addArgument("--image", false);
-    addArgument("image_name", false);
-    addArgument("--tooltip", false);
-    addArgument("image_tooltip", false);
-    addArgument("reset", false);
-}
-
 void ImageCommand::executeCommand(std::string* args, unsigned argsLength) {
     DiscordHandler& dhandler = DiscordHandler::getInstance();
     bool updateRequired = parseImageOptions(args, argsLength);

@@ -5,6 +5,8 @@
 class ReInitDiscordCommand : public ICommand {
 
 public:
-    ReInitDiscordCommand();
+    ReInitDiscordCommand() :
+        ICommand("reinitdiscord", "Reinitialize Discord.") {
+    }
     void executeCommand(std::string* args, unsigned argsLength) override;
 };

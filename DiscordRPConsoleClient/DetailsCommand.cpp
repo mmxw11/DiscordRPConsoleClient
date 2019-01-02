@@ -4,11 +4,6 @@
 #include "DiscordHandler.h"
 #include "StringUtils.h"
 
-DetailsCommand::DetailsCommand() :
-    ICommand("details", "Set what the user is currently doing. (\"Competitive - Captain's Mode\", \"In Queue\", \"Unranked PvP\", \"reset\")") {
-    addArgument("details/reset", true);
-}
-
 void DetailsCommand::executeCommand(std::string* args, unsigned argsLength) {
     std::string& details = args[0];
     sutils::trim(details);

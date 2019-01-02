@@ -7,13 +7,6 @@
 #include <sstream>
 #include <regex>
 
-TimeCommand::TimeCommand() :
-    ICommand("time", "Set the the displayed on the user's profile. (\"Remaining 10 minutes\", \"Elapsed 30 seconds\")") {
-    addArgument("--starttime/--endtime", true);
-    addArgument("yyyy-MM-dd HH:mm:ss", false);
-    addArgument("reset", false);
-}
-
 void TimeCommand::executeCommand(std::string* args, unsigned argsLength) {
     std::string* type = nullptr;
     std::string timeStr = "";

@@ -5,6 +5,8 @@
 class ClearPresenceCommand : public ICommand {
 
 public:
-    ClearPresenceCommand();
+    ClearPresenceCommand() :
+        ICommand("clearpresence", "Clear presence information.") {
+    }
     void executeCommand(std::string* args, unsigned argsLength) override;
 };

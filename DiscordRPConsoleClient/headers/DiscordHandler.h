@@ -9,7 +9,7 @@ class DiscordHandler {
 public:
     DiscordHandler(const DiscordHandler&) = delete;
     DiscordHandler& operator=(const DiscordHandler&) = delete;
-    enum State {
+    enum class State {
         INITIALIZED,
         CONNECTED,
         UNINITIALIZED

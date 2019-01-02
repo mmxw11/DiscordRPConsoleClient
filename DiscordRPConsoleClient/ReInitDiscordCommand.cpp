@@ -3,10 +3,6 @@
 #include "ReInitDiscordCommand.h"
 #include "DiscordHandler.h"
 
-ReInitDiscordCommand::ReInitDiscordCommand() :
-    ICommand("reinitdiscord", "Reinitialize Discord.") {
-}
-
 void ReInitDiscordCommand::executeCommand(std::string* args, unsigned argsLength) {
     DiscordHandler& dhandler = DiscordHandler::getInstance();
     if (dhandler.uninitialize()) {

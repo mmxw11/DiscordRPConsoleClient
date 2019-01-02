@@ -3,10 +3,6 @@
 #include "ClearPresenceCommand.h"
 #include "DiscordHandler.h"
 
-ClearPresenceCommand::ClearPresenceCommand() :
-    ICommand("clearpresence", "Clear presence information.") {
-}
-
 void ClearPresenceCommand::executeCommand(std::string* args, unsigned argsLength) {
     DiscordHandler& dhandler = DiscordHandler::getInstance();
     bool updated = dhandler.clearPresenceInfo();
