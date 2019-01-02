@@ -178,6 +178,7 @@
     <ClCompile Include="PartySizeCommand.cpp" />
     <ClCompile Include="StateCommand.cpp" />
     <ClCompile Include="StringUtils.cpp" />
+    <ClCompile Include="TimeCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\ApplicationManager.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="headers\PartySizeCommand.h" />
     <ClInclude Include="headers\StateCommand.h" />
     <ClInclude Include="headers\StringUtils.h" />
+    <ClInclude Include="headers\TimeCommand.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

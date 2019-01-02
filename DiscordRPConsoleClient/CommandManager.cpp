@@ -8,6 +8,7 @@
 #include "ClearPresenceCommand.h"
 #include "StateCommand.h"
 #include "DetailsCommand.h"
+#include "TimeCommand.h"
 #include "ImageCommand.h"
 #include "PartySizeCommand.h"
 
@@ -28,6 +29,7 @@ void CommandManager::registerCommands() {
     registerCommand(std::make_unique<ClearPresenceCommand>());
     registerCommand(std::make_unique<StateCommand>());
     registerCommand(std::make_unique<DetailsCommand>());
+    registerCommand(std::make_unique<TimeCommand>());
     registerCommand(std::make_unique<ImageCommand>());
     registerCommand(std::make_unique<PartySizeCommand>());
 }

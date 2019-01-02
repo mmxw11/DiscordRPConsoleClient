@@ -1,8 +1,6 @@
 #include "pch.h"
 
 #include "DiscordHandler.h"
-#include <thread>
-#include <Windows.h>
 #include "discord-rpc/discord_rpc.h"
 
 // link discord library
@@ -25,17 +23,25 @@ DiscordHandler::~DiscordHandler() {
 
 /**
 TODO:
+32-bit build
 put command settings to header (leave implementation in cpp files)
-insert order for command args map
+insert order for command args map + map in cmd manager
 something is likely leaking memory _CrtDumpMemoryLeaks() -> Detected memory leaks!;
 remove app id from init and own function for it (+ ask at startup)
-time command
 cleaning
 -------------------------------------------
 disconnect, connect (reinit) command [DONE]
 clear presence command [DONE]
 const char* state; [DONE]
 const char* details; [DONE]
+
+DONT SEND ENDTIMESTAMP WITHOUT STATE OR YOUR DISCORD CRASHES!
+int64_t startTimestamp;
+int64_t endTimestamp;
+ONLY START -> Elpsed
+ONLY END -> Remaining
+BOTH -> Time left
+
 const char* largeImageKey; [DONE]
 const char* largeImageText; [DONE]
 
@@ -52,12 +58,6 @@ int partyMax; [DONE]
 
 -------------------------------------------
 
-DONT SEND ENDTIMESTAMP WITHOUT STATE OR YOUR DISCORD CRASHES!
-int64_t startTimestamp;
-int64_t endTimestamp;
-ONLY START -> Elpsed
-ONLY END -> Remaining
-BOTH -> Time left
 --------------------------------------------------
 
 --------------------------------------------------
@@ -106,8 +106,8 @@ bool DiscordHandler::updatePresence() {
     memset(&discordPresence, 0, sizeof(discordPresence));
     discordPresence.state = presenceSettings.state.c_str();
     discordPresence.details = presenceSettings.details.c_str();
-    // int64_t startTimestamp
-    // int64_t endTimestamp
+    discordPresence.startTimestamp = presenceSettings.startTimestamp;
+    discordPresence.endTimestamp = presenceSettings.endTimestamp;
     discordPresence.largeImageKey = presenceSettings.largeImageKey.c_str();
     discordPresence.largeImageText = presenceSettings.largeImageText.c_str();
     discordPresence.smallImageKey = presenceSettings.smallImageKey.c_str();
@@ -172,6 +172,16 @@ bool DiscordHandler::setPartySize(const int partySize, const int partyMax, bool 
     }
     presenceSettings.partySize = partySize == -1 ? 0 : partySize;
     presenceSettings.partyMax = partyMax == 1 ? 0 : partyMax;
+    return update ? updatePresence() : false;
+}
+
+bool DiscordHandler::setStartTimestamp(const int64_t timestamp, bool update) {
+    presenceSettings.startTimestamp = timestamp == -1 ? 0 : timestamp;
+    return update ? updatePresence() : false;
+}
+
+bool DiscordHandler::setEndTimestamp(const int64_t timestamp, bool update) {
+    presenceSettings.endTimestamp = timestamp == -1 ? 0 : timestamp;
     return update ? updatePresence() : false;
 }
 

@@ -23,13 +23,9 @@ public:
     bool setImage(const std::string& image, bool large, bool update);
     bool setImageText(const std::string& text, bool large, bool update);
     bool setPartySize(const int partySize, const int partyMax, bool update);
-
-    //TODO:
-    void setStartTimestamp();
-    void setEndTimestamp();
-
+    bool setStartTimestamp(const int64_t timestamp, bool update);
+    bool setEndTimestamp(const int64_t timestamp, bool update);
     void printNotConnectedErrorMessage() const;
-
     static DiscordHandler& getInstance();
     bool isCallbackUpdate();
     const std::atomic<State>& getHandlerState() const;
