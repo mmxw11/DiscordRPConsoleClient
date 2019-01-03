@@ -6,7 +6,7 @@
 #include <memory>
 #include "ICommand.h"
 
-class ApplicationManager; // forward declaration
+class ApplicationManager; // Forward declaration.
 
 class CommandManager {
 

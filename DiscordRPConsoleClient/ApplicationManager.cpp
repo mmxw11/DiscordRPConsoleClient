@@ -4,7 +4,6 @@
 #include "StringUtils.h"
 #include <thread>
 #include <assert.h>
-#include "PartySizeCommand.h"
 
 // Ignore function definition not found warning. (linker will take care of this later on...)
 extern "C" void Discord_RunCallbacks();
@@ -28,9 +27,9 @@ void ApplicationManager::runApplication(const std::string& applicationId) {
     bool success = discordHandler.initialize();
     assert(success);
     this->running = true;
-    // start console input thread.
+    // Start console input thread.
     std::thread consoleThread(&ApplicationManager::runConsoleInputLoop, this);
-    // discord callbacks.
+    // Discord callbacks.
     while (running) {
         const DiscordHandler::State& handlerState = discordHandler.getHandlerState();
         if (handlerState == DiscordHandler::State::UNINITIALIZED) {
@@ -40,7 +39,7 @@ void ApplicationManager::runApplication(const std::string& applicationId) {
             Discord_RunCallbacks();
         }
     }
-    std::cin.putback('\n'); // push a new line character into the buffer. triggers getline if needed.
+    std::cin.putback('\n'); // Push a new line character into the buffer. triggers getline if needed.
     consoleThread.join();
 }
 
@@ -53,14 +52,14 @@ void ApplicationManager::runConsoleInputLoop() {
         std::string commandLineInput;
         std::getline(std::cin, commandLineInput);
         if (!std::cin.good()) {
-            // unexpected input (ctrl + c/break for example)
+            // Unexpected input. (ctrl + c/break for example)
             std::cin.clear();
             shutdown();
             break;
         }
         sutils::trim(commandLineInput);
         if (commandLineInput.empty()) {
-            // just ignore...
+            // Just ignore...
             continue;
         }
         std::cout << std::endl;

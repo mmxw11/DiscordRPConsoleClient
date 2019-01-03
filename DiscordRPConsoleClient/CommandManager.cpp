@@ -22,7 +22,7 @@ void CommandManager::registerCommand(std::unique_ptr<ICommand> command) {
 }
 
 void CommandManager::registerCommands() {
-    // common commands.
+    // Common commands.
     registerCommand(std::make_unique<ExitCommand>(&appManager));
     registerCommand(std::make_unique<HelpCommand>(&appManager));
     // Discord specific commands.
@@ -38,12 +38,12 @@ void CommandManager::registerCommands() {
 bool CommandManager::dispatchCommand(std::string& commandLineInput) {
     std::vector<std::string> cmdInfoStorage;
     sutils::parseCommandLineArgs(commandLineInput, cmdInfoStorage);
-    // remove args from commandLineInput and leave only the command name, first element is always the command.
+    // Remove args from commandLineInput and leave only the command name, first element is always the command.
     commandLineInput = cmdInfoStorage.front();
     sutils::toUpperCase(commandLineInput);
     std::unordered_map<std::string, std::unique_ptr<ICommand>>::const_iterator it = commands.find(commandLineInput);
     if (it == commands.end()) {
-        // command not found.
+        // Command not found.
         return false;
     }
     const std::unique_ptr<ICommand>& icommand = it->second;
@@ -53,11 +53,11 @@ bool CommandManager::dispatchCommand(std::string& commandLineInput) {
         std::cout << "Usage: " << icommand->getUsage() << std::endl;
         return true;
     }
-    // subtract one because the first element is always the command name.
+    // Subtract one because the first element is always the command name.
     unsigned argsLength = static_cast<unsigned>(cmdInfoStorage.size()) - 1;
     std::string* args = nullptr;
     if (argsLength != 0) {
-        // advance the pointer address, args start at the second array element.
+        // Advance the pointer address, args start at the second array element.
         args = cmdInfoStorage.data() + 1;
     }
     icommand->executeCommand(args, argsLength);

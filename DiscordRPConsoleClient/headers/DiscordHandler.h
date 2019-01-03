@@ -33,7 +33,7 @@ public:
 private:
     DiscordHandler();
     ~DiscordHandler();
-    //discord event listeners
+    // Discord event listeners
     static void handleDiscordReady(const struct DiscordUser* connectedUser);
     static void handleDiscordDisconnected(int errcode, const char* message);
     static void handleDiscordError(int errcode, const char* message);

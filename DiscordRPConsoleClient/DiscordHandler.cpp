@@ -3,72 +3,21 @@
 #include "DiscordHandler.h"
 #include "discord-rpc/discord_rpc.h"
 #include <assert.h>
-// link discord library
+
+// Link the Discord library.
 #if defined(_WIN64)
 #pragma comment(lib, "discord-rpc-win64.lib")
 #else
 #pragma comment(lib, "discord-rpc-win32.lib")
 #endif
 
-//DiscordRichPresence DiscordHandler::discordPresence;
-
 DiscordHandler::DiscordHandler() :
     handlerState(State::UNINITIALIZED) {
-    // memset(&discordPresence, 0, sizeof(discordPresence));
 }
 
 DiscordHandler::~DiscordHandler() {
     uninitialize();
 }
-
-/**
-TODO:
-32-bit build
-readme/git/details /upload to github
-cleaning
--------------------------------------------
-disconnect, connect (reinit) command [DONE]
-clear presence command [DONE]
-const char* state; [DONE]
-const char* details; [DONE]
-
-DONT SEND ENDTIMESTAMP WITHOUT STATE OR YOUR DISCORD CRASHES!
-int64_t startTimestamp;
-int64_t endTimestamp;
-ONLY START -> Elpsed
-ONLY END -> Remaining
-BOTH -> Time left
-
-const char* largeImageKey; [DONE]
-const char* largeImageText; [DONE]
-
-----YOU MUST HAVE LARGE IMAGE TO DISPLAY THESE:---
-const char* smallImageKey; [DONE]
-const char* smallImageText; [DONE]
-
-const char* partyId; [NOT REQUIRED]
-
-----YOU MUST SEND STATE TO DISPLAY THESE:---
-MUST BE SENT AT THE SAME TIME!
-int partySize, [DONE]
-int partyMax; [DONE]
-
--------------------------------------------
-
---------------------------------------------------
-
---------------------------------------------------
-
- const char* matchSecret; [NOT USED]
-const char* joinSecret;   [NOT USED]
-const char* spectateSecret; [NOT USED]
-int8_t instance; [NOT USED]
-
-
-*/
-//TODO: REMOVE
-//std::cout << "Tried to uninitialize handler when it's alreay uninitialized!" << std::endl;
- //assert((this->handlerState == State::UNINITIALIZED  && "Tried to initialize handler it's already initialized!"));
 
 void DiscordHandler::setApplicationId(const std::string& applicationId) {
     this->applicationId = applicationId;
@@ -113,19 +62,14 @@ bool DiscordHandler::updatePresence() {
     discordPresence.largeImageText = presenceSettings.largeImageText.c_str();
     discordPresence.smallImageKey = presenceSettings.smallImageKey.c_str();
     discordPresence.smallImageText = presenceSettings.smallImageText.c_str();
-    //const char* partyId [NOT USED]
     discordPresence.partySize = presenceSettings.partySize;
     discordPresence.partyMax = presenceSettings.partyMax;
-    //const char* matchSecret [NOT USED]
-    //const char* joinSecret [NOT USED]
-    //const char* spectateSecret [NOT USED]
-    //int8_t instance [NOT USED]
     Discord_UpdatePresence(&discordPresence);
     return true;
 }
 
 bool DiscordHandler::clearPresenceInfo() {
-    presenceSettings.clearAll(); // clear previous values.
+    presenceSettings.clearAll(); // Clear previous values.
     if (handlerState != State::CONNECTED) {
         return false;
     }

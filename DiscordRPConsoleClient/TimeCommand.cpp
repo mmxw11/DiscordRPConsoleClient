@@ -12,10 +12,10 @@ void TimeCommand::executeCommand(std::string* args, unsigned argsLength) {
     std::string timeStr = "";
     bool updateRequired = false;
     for (unsigned i = 0; i < argsLength; i++) {
-        // check for new option.
+        // Check for new option.
         if (!args[i].rfind("--", 0)) {
-            if (type != nullptr) {
-                // save previous option.
+            if (type) {
+                // Save previous option.
                 if (updateTime(*type, timeStr)) {
                     updateRequired = true;
                 }
@@ -29,13 +29,13 @@ void TimeCommand::executeCommand(std::string* args, unsigned argsLength) {
             }
             continue;
         }
-        if (type == nullptr) {
-            // unknown option just skip.
+        if (!type) {
+            // Unknown option just skip.
             continue;
         }
         timeStr += (timeStr.empty() ? "" : " ") + args[i];
     }
-    if (type != nullptr && updateTime(*type, timeStr)) {
+    if (type && updateTime(*type, timeStr)) {
         updateRequired = true;
     }
     if (!updateRequired) {
@@ -55,7 +55,8 @@ extern "C" char* strptime(const char* s, const char* f, struct tm* tm) {
     if (input.fail()) {
         return nullptr;
     }
-    return (char*)(s + input.tellg());
+    std::istringstream::streamoff data = input.tellg();
+    return (char*) (s + data);
 }
 
 bool TimeCommand::updateTime(const std::string& type, const std::string& timeStr) {
@@ -73,7 +74,7 @@ bool TimeCommand::updateTime(const std::string& type, const std::string& timeStr
         }
         std::tm tm;
         const char* sdate = strptime(timeStr.c_str(), "%Y-%m-%d %H:%M:%S", &tm);
-        if (sdate == nullptr) {
+        if (!sdate) {
             std::cout << "Does \"" << timeStr << "\" look like a proper date format to you? Use the following format: yyyy-MM-dd HH:mm:ss" << std::endl;
             return false;
         }

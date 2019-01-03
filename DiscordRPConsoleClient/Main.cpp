@@ -13,7 +13,7 @@ static BOOL WINAPI ctrlHandler(DWORD dwCtrlType) {
         dwCtrlType != CTRL_BREAK_EVENT) {
         return FALSE;
     }
-    if (appManager == nullptr) {
+    if (!appManager) {
         return FALSE;
     }
     appManager->shutdown();
@@ -21,7 +21,7 @@ static BOOL WINAPI ctrlHandler(DWORD dwCtrlType) {
 }
 
 int main(int argc, char** argv) {
-    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // memory leak detection. (only debug)
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // Memory leak detection. (Windows only (debug))
     std::cout << "DiscordRPConsole client [Version 1.0]" << std::endl;
     std::cout << "Control Discord Rich Presence easily from command line.\n" << std::endl;
     // Set handler for shutdown.
@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
         printf("\nERROR: applicationId cannot be empty!");
         return 1;
     }
-    // Initialize everything.
+    // Initialize.
     std::cout << "Connecting to Discord with the applicationId of \"" << applicationId << "\".\nIf nothing happens check the spelling and make sure your Discord client is running." << std::endl;
     std::cout << "\nUse \"HELP\" command to see a list of available commands." << std::endl;
     ApplicationManager appManagerInstance;

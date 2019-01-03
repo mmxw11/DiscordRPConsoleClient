@@ -1,13 +1,13 @@
-// precompiled headers
+// Precompiled headers.
 #pragma once
 
-// memory leak detection (debug only)
+// Memory leak detection. (Windows only (debug))
 #ifndef NDEBUG
-#define _CRTDBG_MAP_ALLOC  
-#include <stdlib.h>  
-#include <crtdbg.h>  
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
 #endif
 
-// widely used headers
+// Widely used headers.
 #include <iostream>
 #include <string>

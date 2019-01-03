@@ -11,7 +11,7 @@ void HelpCommand::executeCommand(std::string* args, unsigned argsLength) {
         sutils::trim(argCommandName);
         sutils::toUpperCase(argCommandName);
         const ICommand* icommand = commandManager.getCommand(argCommandName);
-        if (icommand == nullptr) {
+        if (!icommand) {
             std::cout << "'" << argCommandName << "' is not a recognized command, \nUse \"" << getCommandName() << "\" command to see a list of available commands.\n" << std::endl;
             return;
         }
@@ -21,7 +21,7 @@ void HelpCommand::executeCommand(std::string* args, unsigned argsLength) {
         }
     } else {
         std::cout << "Use \"" << getCommandName() << " command-name\" for more information on a specific command." << std::endl;
-        for (std::string commandName : commandManager.getCommandNames()) { // don't take as reference so we can add padding to it. 
+        for (std::string commandName : commandManager.getCommandNames()) { // Don't take as reference so we can add padding to it. 
             const std::string& description = commandManager.getCommand(commandName)->getDescription();
             sutils::addPaddingToRight(commandName, 20);
             std::cout << commandName << description << std::endl;

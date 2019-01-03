@@ -1,2 +1,2 @@
-// required for precompiled headers.
+// Required for precompiled headers.
 #include "pch.h"

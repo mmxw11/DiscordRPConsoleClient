@@ -22,44 +22,44 @@ bool ImageCommand::parseImageOptions(std::string* args, unsigned argsLength) con
     const std::string* lastOption = nullptr;
     bool updateRequired = false;
     for (unsigned i = 0; i < argsLength; i++) {
-        // check for new image type.
+        // Check for new image type.
         if (sutils::equalsIgnoreCase(args[i], "--largeimage") || sutils::equalsIgnoreCase(args[i], "--smallimage")) {
-            // set previous settings.
-            if (lastImageType != nullptr) {
+            // Save previous option.
+            if (lastImageType) {
                 imageTypes.emplace(*lastImageType);
                 if (setImageOptions(*lastImageType, options)) {
                     updateRequired = true;
                 }
             }
-            // detected a new image type.
+            // Detected a new image type.
             sutils::toLowerCase(args[i]);
             lastImageType = &args[i];
-            // reset previous values.
+            // Reset previous values.
             options.clear();
             lastOption = nullptr;
             continue;
         }
-        // check if image type is already set or null.
-        if (lastImageType == nullptr) {
+        // Check if image type is already set or null.
+        if (!lastImageType) {
             std::cout << "Ignored an option \"" << args[i] << "\" because image type is not set! Use: --largeimage or --smallimage!" << std::endl;
             continue;
         } else if (imageTypes.find(*lastImageType) != imageTypes.end()) {
-            // image type is already set.
+            // Image type is already set.
             if (!args[i].rfind("--", 0)) {
                 std::cout << "Ignored an option \"" << args[i] << "\" because the image type \"" << *lastImageType << "\" is already set!" << std::endl;
             }
             continue;
         }
-        //check options.
-        if (lastOption == nullptr) {
+        // Check options.
+        if (!lastOption) {
             if (args[i].rfind("--", 0)) {
-                // found value but no option specifier.
+                // Found a value but no option specifier.
                 std::cout << "Ignored the value \"" << args[i] << "\" because no option was set for it!" << std::endl;
             } else {
-                // new setting option.
+                // New setting option.
                 sutils::toLowerCase(args[i]);
                 if (options.find(args[i]) != options.end()) {
-                    // already set
+                    // Already set.
                     std::cout << "Ignored an option \"" << args[i] << "\" because options for the image type of \"" << *lastImageType << "\" are already set!" << std::endl;
                 } else {
                     lastOption = &args[i];
@@ -67,12 +67,12 @@ bool ImageCommand::parseImageOptions(std::string* args, unsigned argsLength) con
             }
             continue;
         }
-        // add the value to the map.
+        // Add the value to the map.
         options.emplace(*lastOption, &args[i]);
         lastOption = nullptr;
     }
-    // update last image if needed.
-    if (lastImageType != nullptr && setImageOptions(*lastImageType, options)) {
+    // Update last image if needed.
+    if (lastImageType && setImageOptions(*lastImageType, options)) {
         updateRequired = true;
     }
     return updateRequired;
@@ -83,13 +83,13 @@ bool ImageCommand::setImageOptions(const std::string& imageType, const std::unor
     const std::string message = "\"" + std::string(large ? "Large" : "Small").append(" image\"");
     DiscordHandler& dhandler = DiscordHandler::getInstance();
     bool updateRequired = false;
-    // image.
+    // Image.
     std::string data = "--image";
     if (shouldUpdateImageData(data, options)) {
         updateRequired = !dhandler.setImage(data, large, false);
         sendUpdateFeedback(message, data.empty());
     }
-    // image tooltip.
+    // Image tooltip.
     data = "--tooltip";
     if (shouldUpdateImageData(data, options)) {
         updateRequired = !dhandler.setImageText(data, large, false);
@@ -105,7 +105,7 @@ bool ImageCommand::setImageOptions(const std::string& imageType, const std::unor
 bool ImageCommand::shouldUpdateImageData(std::string& data, const std::unordered_map<std::string, std::string*>& options) const {
     auto key = options.find(data);
     if (key == options.end()) {
-        // key not found.
+        // Key not found.
         return false;
     }
     const std::string& value = *key->second;

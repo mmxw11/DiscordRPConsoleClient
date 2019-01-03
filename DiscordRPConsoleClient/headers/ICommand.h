@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-class ApplicationManager; // forward declaration
+class ApplicationManager; // Forward declaration.
 
 class ICommand {
 

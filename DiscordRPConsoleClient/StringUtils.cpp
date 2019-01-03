@@ -26,7 +26,10 @@ namespace sutils {
     }
 
     void addPaddingToRight(std::string& str, int minWidth) {
-        const int width = std::max(minWidth - static_cast<int>(str.size()), 0);
+        int  width = minWidth - static_cast<int>(str.size());
+        if (width <= 0) {
+            return;
+        }
         str += std::string(width, ' ');
     }
 
@@ -43,11 +46,11 @@ namespace sutils {
         errno = 0;
         long value = strtol(str, &end, base);
         if ((errno == ERANGE && value == LONG_MAX) || value > INT_MAX) {
-            //overflow
+            // Overflow
             return false;
         }
         if ((errno == ERANGE && value == LONG_MIN) || value < INT_MIN) {
-            //underflow
+            // Underflow
             return false;
         }
         if (*str == '\0' || *end != '\0') {
@@ -60,7 +63,6 @@ namespace sutils {
     void parseCommandLineArgs(const std::string& line, std::vector<std::string>& argsStorage) {
         const char SPACE = ' ', TAB = '\t';
         const char  DQUOTE = '\"', SQUOTE = '\'';
-
         // Copy the command line string to a character array.
         // strdup() uses malloc() to get memory for the new string.
     #if defined(_WIN32)
@@ -91,7 +93,7 @@ namespace sutils {
                 } else {
                     // Unquoted token.
                     tokens.push_back(charArrayCursor);
-                    pEnd = strpbrk(charArrayCursor + 1, " \n\r\t"); // whitespace
+                    pEnd = strpbrk(charArrayCursor + 1, " \n\r\t"); // Whitespace
                 }
                 // Check token.
                 if (!pEnd) {
@@ -108,7 +110,7 @@ namespace sutils {
                 argsStorage.emplace_back(*it);
             }
         } catch (...) {
-            // just in case something goes wrong.
+            // Just in case something goes wrong.
             free(charArray);
             throw;
         }

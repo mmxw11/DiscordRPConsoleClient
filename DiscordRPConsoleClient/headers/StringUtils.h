@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <string>
 #include <vector>
@@ -18,7 +18,7 @@ namespace sutils {
     bool str2Int(int& result, char const* str, int base = 0);
 
     /**
-     * Parse command line arguments and adds the to the vector.
+     * Parse command line arguments and add them to the vector.
      * This is a modified version of https://stackoverflow.com/a/30518617/9816236
      */
     void parseCommandLineArgs(const std::string& line, std::vector<std::string>& argsStorage);
