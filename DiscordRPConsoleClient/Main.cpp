@@ -21,6 +21,7 @@ static BOOL WINAPI ctrlHandler(DWORD dwCtrlType) {
 }
 
 int main(int argc, char** argv) {
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // memory leak detection. (only debug)
     std::cout << "DiscordRPConsole client [Version 1.0]" << std::endl;
     std::cout << "Control Discord Rich Presence easily from command line.\n" << std::endl;
     // Set handler for shutdown.
@@ -64,7 +65,5 @@ int main(int argc, char** argv) {
     ::appManager = &appManagerInstance;
     appManagerInstance.runApplication(applicationId);
     std::cout << "Bye." << std::endl;
-
-    _CrtDumpMemoryLeaks();
     return 0;
 }

@@ -14,7 +14,6 @@ public:
     void runApplication(const std::string& applicationId);
     void shutdown();
     CommandManager& getCommandManager();
-    DiscordHandler& getDiscordHandler();
 private:
     void runConsoleInputLoop();
     std::atomic<bool> running;

@@ -24,7 +24,7 @@ DiscordHandler::~DiscordHandler() {
 /**
 TODO:
 32-bit build
-something is likely leaking memory _CrtDumpMemoryLeaks() -> Detected memory leaks!;
+readme/git/details /upload to github
 cleaning
 -------------------------------------------
 disconnect, connect (reinit) command [DONE]

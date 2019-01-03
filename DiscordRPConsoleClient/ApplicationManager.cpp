@@ -4,11 +4,13 @@
 #include "StringUtils.h"
 #include <thread>
 #include <assert.h>
+#include "PartySizeCommand.h"
 
 // Ignore function definition not found warning. (linker will take care of this later on...)
 extern "C" void Discord_RunCallbacks();
 
 ApplicationManager::ApplicationManager() :
+    running(false),
     commandManager(*this),
     discordHandler(DiscordHandler::getInstance()) {
     commandManager.registerCommands();
@@ -79,8 +81,4 @@ void ApplicationManager::shutdown() {
 
 CommandManager& ApplicationManager::getCommandManager() {
     return commandManager;
-}
-
-DiscordHandler& ApplicationManager::getDiscordHandler() {
-    return discordHandler;
 }
