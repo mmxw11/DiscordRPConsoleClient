@@ -35,7 +35,7 @@ void PartySizeCommand::executeCommand(std::string* args, unsigned argsLength) {
             std::cout << "Party size and max players must be greater than 0!" << std::endl;
             return;
         }
-        std::cout << "Updatig party players to (" << partySize << " of " << maxPlayers << ")" << std::endl;
+        std::cout << "Updating party players to (" << partySize << " of " << maxPlayers << ")" << std::endl;
         updated = dhandler.setPartySize(partySize, maxPlayers, true);
     }
     if (!updated) {
