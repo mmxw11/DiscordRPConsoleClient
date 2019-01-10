@@ -14,6 +14,7 @@ struct PresenceSettings {
     std::string smallImageText;
     int partySize;
     int partyMax;
+    bool displaySpectateInfo;
 
     void clearAll() {
         state.clear();
@@ -26,5 +27,6 @@ struct PresenceSettings {
         smallImageText.clear();
         partySize = 0;
         partyMax = 0;
+        displaySpectateInfo = false;
     }
 };

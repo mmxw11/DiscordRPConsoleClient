@@ -176,6 +176,7 @@
     <ClCompile Include="DetailsCommand.cpp" />
     <ClCompile Include="ImageCommand.cpp" />
     <ClCompile Include="PartySizeCommand.cpp" />
+    <ClCompile Include="SpectateInfoCommand.cpp" />
     <ClCompile Include="StateCommand.cpp" />
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="TimeCommand.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="headers\DetailsCommand.h" />
     <ClInclude Include="headers\ImageCommand.h" />
     <ClInclude Include="headers\PartySizeCommand.h" />
+    <ClInclude Include="headers\SpectateInfoCommand.h" />
     <ClInclude Include="headers\StateCommand.h" />
     <ClInclude Include="headers\StringUtils.h" />
     <ClInclude Include="headers\TimeCommand.h" />

@@ -26,6 +26,7 @@ public:
     bool setPartySize(const int partySize, const int partyMax, bool update);
     bool setStartTimestamp(const int64_t timestamp, bool update);
     bool setEndTimestamp(const int64_t timestamp, bool update);
+    bool setSpectateInfo(const bool show, bool update);
     void printNotConnectedErrorMessage() const;
     static DiscordHandler& getInstance();
     bool isCallbackUpdate();
@@ -37,6 +38,7 @@ private:
     static void handleDiscordReady(const struct DiscordUser* connectedUser);
     static void handleDiscordDisconnected(int errcode, const char* message);
     static void handleDiscordError(int errcode, const char* message);
+    static void handleDiscordSpectate(const char* secret);
     // variables
     std::string applicationId;
     std::atomic<State> handlerState;

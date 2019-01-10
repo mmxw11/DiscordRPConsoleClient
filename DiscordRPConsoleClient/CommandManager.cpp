@@ -11,6 +11,7 @@
 #include "TimeCommand.h"
 #include "ImageCommand.h"
 #include "PartySizeCommand.h"
+#include "SpectateInfoCommand.h"
 
 CommandManager::CommandManager(ApplicationManager& appManager) :
     appManager(appManager) {
@@ -33,6 +34,7 @@ void CommandManager::registerCommands() {
     registerCommand(std::make_unique<TimeCommand>());
     registerCommand(std::make_unique<ImageCommand>());
     registerCommand(std::make_unique<PartySizeCommand>());
+    registerCommand(std::make_unique<SpectateInfoCommand>());
 }
 
 bool CommandManager::dispatchCommand(std::string& commandLineInput) {

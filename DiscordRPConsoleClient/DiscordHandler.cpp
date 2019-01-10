@@ -33,6 +33,7 @@ bool DiscordHandler::initialize() {
     handlers.ready = handleDiscordReady;
     handlers.disconnected = handleDiscordDisconnected;
     handlers.errored = handleDiscordError;
+    handlers.spectateGame = handleDiscordSpectate;
     Discord_Initialize(applicationId.c_str(), &handlers, 1, NULL);
     std::cout << "Waiting for Discord connection (Ctrl + C to terminate)..." << std::endl;
     this->handlerState = State::INITIALIZED;
@@ -62,8 +63,13 @@ bool DiscordHandler::updatePresence() {
     discordPresence.largeImageText = presenceSettings.largeImageText.c_str();
     discordPresence.smallImageKey = presenceSettings.smallImageKey.c_str();
     discordPresence.smallImageText = presenceSettings.smallImageText.c_str();
+    // discordPresence.partyId
     discordPresence.partySize = presenceSettings.partySize;
     discordPresence.partyMax = presenceSettings.partyMax;
+    // discordPresence.joinSecret
+    if (presenceSettings.displaySpectateInfo) {
+        discordPresence.spectateSecret = "SPECTATE-ID-PLACEHOLDER";
+    }
     Discord_UpdatePresence(&discordPresence);
     return true;
 }
@@ -88,6 +94,7 @@ bool DiscordHandler::setDetails(const std::string& details, bool update) {
 }
 
 bool DiscordHandler::setImage(const std::string& image, bool large, bool update) {
+    // Tips.
     if (!image.empty() && !large && presenceSettings.largeImageKey.empty()) {
         std::cout << "[TIP] Small image won't be displayed if large image is not set!" << std::endl;
     }
@@ -100,6 +107,7 @@ bool DiscordHandler::setImage(const std::string& image, bool large, bool update)
 }
 
 bool DiscordHandler::setImageText(const std::string& text, bool large, bool update) {
+    // Tips.
     if (!text.empty() && ((large && presenceSettings.largeImageKey.empty()) || (!large && presenceSettings.smallImageKey.empty()))) {
         std::cout << "[TIP] Image tooltip won't be displayed if the image is not set!" << std::endl;
     }
@@ -112,8 +120,14 @@ bool DiscordHandler::setImageText(const std::string& text, bool large, bool upda
 }
 
 bool DiscordHandler::setPartySize(const int partySize, const int partyMax, bool update) {
-    if (partySize != -1 && presenceSettings.state.empty()) { // partySize: -1 = reset
-        std::cout << "[TIP] Party size won't be displayed if state is not set!" << std::endl;
+    // Tips.
+    if (partySize != -1) { // partySize: -1 = reset
+        if (presenceSettings.state.empty()) {
+            std::cout << "[TIP] Party size won't be displayed if state is not set!" << std::endl;
+        }
+        if (partySize > partyMax && presenceSettings.displaySpectateInfo) {
+            std::cout << "[TIP] Spectate invites will expire when party size is more than party max!" << std::endl;
+        }
     }
     presenceSettings.partySize = partySize == -1 ? 0 : partySize;
     presenceSettings.partyMax = partyMax == 1 ? 0 : partyMax;
@@ -127,6 +141,15 @@ bool DiscordHandler::setStartTimestamp(const int64_t timestamp, bool update) {
 
 bool DiscordHandler::setEndTimestamp(const int64_t timestamp, bool update) {
     presenceSettings.endTimestamp = timestamp == -1 ? 0 : timestamp;
+    return update ? updatePresence() : false;
+}
+
+bool DiscordHandler::setSpectateInfo(const bool show, bool update) {
+    // Tips.
+    if (show && presenceSettings.partySize > presenceSettings.partyMax) { // partySize more than max.
+        std::cout << "[TIP] You can't send spectate invites when party size is more than party max!" << std::endl;
+    }
+    presenceSettings.displaySpectateInfo = show;
     return update ? updatePresence() : false;
 }
 
@@ -168,4 +191,8 @@ void DiscordHandler::handleDiscordDisconnected(int errcode, const char* message)
 void DiscordHandler::handleDiscordError(int errcode, const char* message) {
     printf("[Discord]: error (%d: %s)\n", errcode, message);
     getInstance().uninitialize();
+}
+
+void DiscordHandler::handleDiscordSpectate(const char* secret) {
+    printf("[Discord]: You clicked  \"Spectate\" on someone's invitation. Nothing will happen because it's just a dummy invite (spectateSecret: %s).\n", secret);
 }
