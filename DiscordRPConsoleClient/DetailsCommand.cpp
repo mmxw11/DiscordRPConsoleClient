@@ -8,7 +8,7 @@ void DetailsCommand::executeCommand(std::string* args, unsigned argsLength) {
     std::string& details = args[0];
     sutils::trim(details);
     if (details.empty()) {
-        std::cout << "Does an empty string look like good details to you?\nIf you are looking to reset your details use \"setdetails reset\" instead." << std::endl;
+        std::cout << "Details cannot be empty!\nIf you are looking to reset your details use \"details reset\" instead." << std::endl;
         return;
     }
     DiscordHandler& dhandler = DiscordHandler::getInstance();

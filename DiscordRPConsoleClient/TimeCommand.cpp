@@ -69,13 +69,13 @@ bool TimeCommand::updateTime(const std::string& type, const std::string& timeStr
         // https://developercommunity.visualstudio.com/content/problem/18311/stdget-time-asserts-with-istreambuf-iterator-is-no.html
         std::regex dateRegex("([0-9]{4})-(1|0)?([0-9]{1})-([0-3]?)([0-9]{1}) ([0-2]?)([0-9]{1}):([0-6]?)([0-9]{1}):([0-5]?)([0-9]{1})");
         if (!std::regex_match(timeStr, dateRegex)) {
-            std::cout << "Does \"" << timeStr << "\" look like a proper date format to you? Use the following format: yyyy-MM-dd HH:mm:ss" << std::endl;
+            std::cout << "\"" << timeStr << "\" is not a proper date! Use the following format: yyyy-MM-dd HH:mm:ss" << std::endl;
             return false;
         }
         std::tm tm;
         const char* sdate = strptime(timeStr.c_str(), "%Y-%m-%d %H:%M:%S", &tm);
         if (!sdate) {
-            std::cout << "Does \"" << timeStr << "\" look like a proper date format to you? Use the following format: yyyy-MM-dd HH:mm:ss" << std::endl;
+            std::cout << "\"" << timeStr << "\" is not a proper date! Use the following format: yyyy-MM-dd HH:mm:ss" << std::endl;
             return false;
         }
         timestamp = std::mktime(&tm);

@@ -13,7 +13,7 @@ void SpectateInfoCommand::executeCommand(std::string* args, unsigned argsLength)
     DiscordHandler& dhandler = DiscordHandler::getInstance();
     bool show = sutils::equalsIgnoreCase(visibility, "show");
     bool updated = dhandler.setSpectateInfo(show, true);
-    std::cout << "Spectate visibility set to \"" << (show ? "show" : "hide") << "\"." << std::endl;
+    std::cout << "Setting spectate visibility to \"" << (show ? "show" : "hide") << "\"." << std::endl;
     if (!updated) {
         dhandler.printNotConnectedErrorMessage();
     }

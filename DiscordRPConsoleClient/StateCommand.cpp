@@ -8,7 +8,7 @@ void StateCommand::executeCommand(std::string* args, unsigned argsLength) {
     std::string& state = args[0];
     sutils::trim(state);
     if (state.empty()) {
-        std::cout << "Does an empty string look like a good state to you?\nIf you are looking to reset your party state use \"state reset\" instead." << std::endl;
+        std::cout << "State cannot be empty!\nIf you are looking to reset your party state use \"state reset\" instead." << std::endl;
         return;
     }
     DiscordHandler& dhandler = DiscordHandler::getInstance();
