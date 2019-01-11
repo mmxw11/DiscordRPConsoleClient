@@ -12,6 +12,7 @@ struct PresenceSettings {
     std::string largeImageText;
     std::string smallImageKey;
     std::string smallImageText;
+    std::string partyId;
     int partySize;
     int partyMax;
     bool displaySpectateInfo;
@@ -25,6 +26,7 @@ struct PresenceSettings {
         largeImageText.clear();
         smallImageKey.clear();
         smallImageText.clear();
+        partyId.clear();
         partySize = 0;
         partyMax = 0;
         displaySpectateInfo = false;

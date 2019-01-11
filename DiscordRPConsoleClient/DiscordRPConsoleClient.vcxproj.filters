@@ -59,6 +59,9 @@
     <ClCompile Include="SpectateInfoCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameJoinInfoCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\pch.h">
@@ -110,6 +113,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="headers\SpectateInfoCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\GameJoinInfoCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

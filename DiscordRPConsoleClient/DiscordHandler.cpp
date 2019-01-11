@@ -33,7 +33,9 @@ bool DiscordHandler::initialize() {
     handlers.ready = handleDiscordReady;
     handlers.disconnected = handleDiscordDisconnected;
     handlers.errored = handleDiscordError;
+    handlers.joinGame = handleDiscordJoin;
     handlers.spectateGame = handleDiscordSpectate;
+    handlers.joinRequest = handleDiscordJoinRequest;
     Discord_Initialize(applicationId.c_str(), &handlers, 1, NULL);
     std::cout << "Waiting for Discord connection (Ctrl + C to terminate)..." << std::endl;
     this->handlerState = State::INITIALIZED;
@@ -63,12 +65,14 @@ bool DiscordHandler::updatePresence() {
     discordPresence.largeImageText = presenceSettings.largeImageText.c_str();
     discordPresence.smallImageKey = presenceSettings.smallImageKey.c_str();
     discordPresence.smallImageText = presenceSettings.smallImageText.c_str();
-    // discordPresence.partyId
+    discordPresence.partyId = presenceSettings.partyId.c_str();
     discordPresence.partySize = presenceSettings.partySize;
     discordPresence.partyMax = presenceSettings.partyMax;
-    // discordPresence.joinSecret
+    if (!presenceSettings.partyId.empty()) {
+        discordPresence.joinSecret = "JOIN-SECRET-PLACEHOLDER"; // This can be just anything. Only partyId matters.
+    }
     if (presenceSettings.displaySpectateInfo) {
-        discordPresence.spectateSecret = "SPECTATE-ID-PLACEHOLDER";
+        discordPresence.spectateSecret = "SPECTATE-SECRET-PLACEHOLDER"; // This can be just anything.
     }
     Discord_UpdatePresence(&discordPresence);
     return true;
@@ -123,10 +127,10 @@ bool DiscordHandler::setPartySize(const int partySize, const int partyMax, bool 
     // Tips.
     if (partySize != -1) { // partySize: -1 = reset
         if (presenceSettings.state.empty()) {
-            std::cout << "[TIP] Party size won't be displayed if state is not set!" << std::endl;
+            std::cout << "[TIP] Party size won't be displayed on your profile if state is not set!" << std::endl;
         }
-        if (partySize > partyMax && presenceSettings.displaySpectateInfo) {
-            std::cout << "[TIP] Spectate invites will expire when party size is more than party max!" << std::endl;
+        if (partySize > partyMax && (!presenceSettings.partyId.empty() || presenceSettings.displaySpectateInfo)) {
+            std::cout << "[TIP] Game join and spectate invites will expire when party size is more than party max!" << std::endl;
         }
     }
     presenceSettings.partySize = partySize == -1 ? 0 : partySize;
@@ -144,18 +148,32 @@ bool DiscordHandler::setEndTimestamp(const int64_t timestamp, bool update) {
     return update ? updatePresence() : false;
 }
 
+bool DiscordHandler::setGameJoinInfo(const std::string& id, bool update) {
+    // Tips.
+    if (!id.empty() && presenceSettings.partySize > presenceSettings.partyMax) { // partySize more than max.
+        std::cout << "[TIP] You can't send game join invites when party size is more than party max!" << std::endl;
+    }
+    presenceSettings.partyId = id;
+    return update ? updatePresence() : false;
+}
+
 bool DiscordHandler::setSpectateInfo(const bool show, bool update) {
     // Tips.
-    if (show && presenceSettings.partySize > presenceSettings.partyMax) { // partySize more than max.
-        std::cout << "[TIP] You can't send spectate invites when party size is more than party max!" << std::endl;
+    if (show) {
+        if (presenceSettings.partySize > presenceSettings.partyMax) { // partySize more than max.
+            std::cout << "[TIP] You can't send spectate invites when party size is more than party max!" << std::endl;
+        }
+        if (!presenceSettings.partyId.empty()) { // Spectate invites tied to partyId.
+            std::cout << "[TIP] If you change partyId, spectate invites may reset!" << std::endl;
+        }
     }
     presenceSettings.displaySpectateInfo = show;
     return update ? updatePresence() : false;
 }
 
 void DiscordHandler::printNotConnectedErrorMessage() const {
-    std::cout << "Cannot update to Discord because the client is not connected!" << std::endl;
-    std::cout << "Try reinit Discord by calling \"reinitdiscord\" command." << std::endl;
+    std::cout << "Can't send data to Discord because the client is not connected!" << std::endl;
+    std::cout << "Try reinit Discord connection by calling \"reinitdiscord\" command." << std::endl;
 }
 
 DiscordHandler& DiscordHandler::getInstance() {
@@ -193,6 +211,16 @@ void DiscordHandler::handleDiscordError(int errcode, const char* message) {
     getInstance().uninitialize();
 }
 
+void DiscordHandler::handleDiscordJoin(const char* secret) {
+    printf("[Discord]: You clicked on someone's game invitation. Nothing will happen because it's just a dummy invite (joinSecret: %s).\n", secret);
+}
+
 void DiscordHandler::handleDiscordSpectate(const char* secret) {
-    printf("[Discord]: You clicked  \"Spectate\" on someone's invitation. Nothing will happen because it's just a dummy invite (spectateSecret: %s).\n", secret);
+    printf("[Discord]: You clicked on someone's spectate invitation. Nothing will happen because it's just a dummy invite (spectateSecret: %s).\n", secret);
+}
+
+void DiscordHandler::handleDiscordJoinRequest(const DiscordUser* request) {
+    printf("[Discord]: Received join request from %s#%s - %s\n", request->username, request->discriminator, request->userId);
+    printf("[Discord]: Responding to %s#%s's join request with \"DISCORD_REPLY_NO\" because it's a dummy invite.\n", request->username, request->discriminator);
+    Discord_Respond(request->userId, DISCORD_REPLY_NO);
 }
