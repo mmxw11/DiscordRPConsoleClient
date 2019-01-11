@@ -17,6 +17,6 @@ Take the `.lib` file you downloaded and copy it to the `$(SolutionDir)dependenci
 After that, if you are using Visual Studio with the solution settings provided in this repo, all settings are already set up and the application should build.
 
 ### Important
-- Only Windows is currently supported but with small changes this should be able to run on other platforms. There are only 3 files that contain Windows specific code. These are `Main.cpp` (Windows APIs), `DiscordHandler.cpp` (Linker settings) and `pch.h` (Memory leak detection + precompiled headers).
+- Only Windows is currently supported but with small changes this should be able to run on other platforms. There are only 2 files that contain Windows specific code. These are `Main.cpp` (Windows APIs) and `DiscordHandler.cpp` (Linker settings).
 - If the linker can't find the library files, make sure you have added `$(SolutionDir)dependencies\lib` to library directories.
 - If you are getting errors on header files not found, you need to add these to include directories `$(ProjectDir)headers;$(SolutionDir)dependencies\include`.
