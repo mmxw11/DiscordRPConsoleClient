@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
 #if defined(_DEBUG) && defined(_MSC_VER)
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-    std::cout << "DiscordRPConsole client [Version 1.0]" << std::endl;
+    std::cout << "DiscordRPConsole client [Version 1.1]" << std::endl;
     std::cout << "Control Discord Rich Presence easily from command line.\n" << std::endl;
     // Set handler for shutdown.
     if (!SetConsoleCtrlHandler(ctrlHandler, TRUE)) {
