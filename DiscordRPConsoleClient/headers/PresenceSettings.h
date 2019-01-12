@@ -15,6 +15,7 @@ struct PresenceSettings {
     std::string partyId;
     int partySize;
     int partyMax;
+    std::string joinSecret;
     bool displaySpectateInfo;
 
     void clearAll() {
@@ -29,6 +30,7 @@ struct PresenceSettings {
         partyId.clear();
         partySize = 0;
         partyMax = 0;
+        joinSecret.clear();
         displaySpectateInfo = false;
     }
 };

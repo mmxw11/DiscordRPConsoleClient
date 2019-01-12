@@ -35,6 +35,7 @@ public:
 private:
     DiscordHandler();
     ~DiscordHandler();
+    void mangleDiscordSecret(std::string& secret);
     // Discord event handlers
     static void handleDiscordReady(const struct DiscordUser* connectedUser);
     static void handleDiscordDisconnected(int errcode, const char* message);

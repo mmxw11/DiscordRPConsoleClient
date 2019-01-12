@@ -68,9 +68,7 @@ bool DiscordHandler::updatePresence() {
     discordPresence.partyId = presenceSettings.partyId.c_str();
     discordPresence.partySize = presenceSettings.partySize;
     discordPresence.partyMax = presenceSettings.partyMax;
-    if (!presenceSettings.partyId.empty()) {
-        discordPresence.joinSecret = "JOIN-SECRET-PLACEHOLDER"; // This can be just anything. Only partyId matters.
-    }
+    discordPresence.joinSecret = presenceSettings.joinSecret.c_str();
     if (presenceSettings.displaySpectateInfo) {
         discordPresence.spectateSecret = "SPECTATE-SECRET-PLACEHOLDER"; // This can be just anything.
     }
@@ -154,6 +152,12 @@ bool DiscordHandler::setGameJoinInfo(const std::string& id, bool update) {
         std::cout << "[TIP] You can't send game join invites when party size is more than party max!" << std::endl;
     }
     presenceSettings.partyId = id;
+    if (id.empty()) {
+        presenceSettings.joinSecret = "";
+    } else {
+        presenceSettings.joinSecret = id;
+        mangleDiscordSecret(presenceSettings.joinSecret);
+    }
     return update ? updatePresence() : false;
 }
 
@@ -195,6 +199,13 @@ const std::atomic<DiscordHandler::State>& DiscordHandler::getHandlerState() cons
     return handlerState;
 }
 
+void DiscordHandler::mangleDiscordSecret(std::string& secret) {
+    char key[] = { "Super_secret_discord_key" };
+    for (int i = 0; i < secret.size(); i++) {
+        secret[i] = secret[i] ^ key[i % (sizeof(key) / sizeof(char))];
+    }
+}
+
 void DiscordHandler::handleDiscordReady(const DiscordUser* connectedUser) {
     printf("[Discord]: connected to user %s#%s - %s\n", connectedUser->username, connectedUser->discriminator, connectedUser->userId);
     getInstance().handlerState = State::CONNECTED;
@@ -212,7 +223,11 @@ void DiscordHandler::handleDiscordError(int errcode, const char* message) {
 }
 
 void DiscordHandler::handleDiscordJoin(const char* secret) {
-    printf("[Discord]: You clicked on someone's game invitation. Nothing will happen because it's just a dummy invite (joinSecret: %s).\n", secret);
+    printf("[Discord]: You clicked on someone's game invitation. (joinSecret: %s).\n", secret);
+    std::string partyId = secret;
+    getInstance().mangleDiscordSecret(partyId);
+    printf("[Discord]: Joining to their party... setting game join visibility to \"show\" with the partyId of \"%s\".", partyId.c_str());
+    getInstance().setGameJoinInfo(partyId, true);
 }
 
 void DiscordHandler::handleDiscordSpectate(const char* secret) {
@@ -221,6 +236,22 @@ void DiscordHandler::handleDiscordSpectate(const char* secret) {
 
 void DiscordHandler::handleDiscordJoinRequest(const DiscordUser* request) {
     printf("[Discord]: Received join request from %s#%s - %s\n", request->username, request->discriminator, request->userId);
-    printf("[Discord]: Responding to %s#%s's join request with \"DISCORD_REPLY_NO\" because it's a dummy invite.\n", request->username, request->discriminator);
+    int response = DISCORD_REPLY_NO;
+    do {
+        printf("Accept? (y/n)");
+        std::string input;
+        std::getline(std::cin, input);
+        if (!std::cin.good()) {
+            // Unexpected input. (ctrl + c/break for example)
+            std::cin.clear();
+            break;
+        }
+        if (input != "y" && input != "n") {
+            continue;
+        }
+        response = input == "y" ? DISCORD_REPLY_YES : DISCORD_REPLY_NO;
+        break;
+    } while (1);
+    printf("[Discord]: Responding to %s#%s's join request with \"%s\" because it's a dummy invite.\n", request->username, request->discriminator, response == 0 ? "DISCORD_REPLY_NO" : "DISCORD_REPLY_YES");
     Discord_Respond(request->userId, DISCORD_REPLY_NO);
 }
