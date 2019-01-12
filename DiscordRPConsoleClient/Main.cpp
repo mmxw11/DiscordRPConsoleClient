@@ -64,9 +64,17 @@ int main(int argc, char** argv) {
     // Initialize.
     std::cout << "Connecting to Discord with the applicationId of \"" << applicationId << "\".\nIf nothing happens check the spelling and make sure your Discord client is running." << std::endl;
     std::cout << "\nUse \"HELP\" command to see a list of available commands." << std::endl;
-    ApplicationManager appManagerInstance;
-    ::appManager = &appManagerInstance;
-    appManagerInstance.runApplication(applicationId);
-    std::cout << "Bye." << std::endl;
+    try {
+        ApplicationManager appManagerInstance;
+        ::appManager = &appManagerInstance;
+        appManagerInstance.runApplication(applicationId);
+        std::cout << "Bye." << std::endl;
+    } catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+        return 1;
+    } catch (...) {
+        std::cout << "Unknown error." << std::endl;
+        return 1;
+    }
     return 0;
 }
