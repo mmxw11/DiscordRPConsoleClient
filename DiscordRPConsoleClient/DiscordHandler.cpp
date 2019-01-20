@@ -2,6 +2,7 @@
 
 #include "DiscordHandler.h"
 #include "discord-rpc/discord_rpc.h"
+#include "ApplicationManager.h"
 #include <assert.h>
 
 // Link the Discord library.
@@ -226,7 +227,7 @@ void DiscordHandler::handleDiscordJoin(const char* secret) {
     printf("[Discord]: You clicked on someone's game invitation. (joinSecret: %s).\n", secret);
     std::string partyId = secret;
     getInstance().mangleDiscordSecret(partyId);
-    printf("[Discord]: Joining to their party... setting game join visibility to \"show\" with the partyId of \"%s\".", partyId.c_str());
+    printf("[Discord]: Joining to their party... setting game join visibility to \"show\" with the partyId of \"%s\".\n", partyId.c_str());
     getInstance().setGameJoinInfo(partyId, true);
 }
 
@@ -237,21 +238,18 @@ void DiscordHandler::handleDiscordSpectate(const char* secret) {
 void DiscordHandler::handleDiscordJoinRequest(const DiscordUser* request) {
     printf("[Discord]: Received join request from %s#%s - %s\n", request->username, request->discriminator, request->userId);
     int response = DISCORD_REPLY_NO;
+    extern ApplicationManager* appManagerInstance;
     do {
-        printf("Accept? (y/n)");
-        std::string input;
-        std::getline(std::cin, input);
-        if (!std::cin.good()) {
-            // Unexpected input. (ctrl + c/break for example)
-            std::cin.clear();
-            break;
-        }
+        printf("Accept? (y/n):\n");
+        std::promise<std::string> promise;
+        appManagerInstance->addInputRequest(promise);
+        std::string input = promise.get_future().get();
         if (input != "y" && input != "n") {
             continue;
         }
         response = input == "y" ? DISCORD_REPLY_YES : DISCORD_REPLY_NO;
         break;
-    } while (1);
-    printf("[Discord]: Responding to %s#%s's join request with \"%s\" because it's a dummy invite.\n", request->username, request->discriminator, response == 0 ? "DISCORD_REPLY_NO" : "DISCORD_REPLY_YES");
+    } while (true);
+    printf("[Discord]: Responding to %s#%s's join request with \"%s\".\n", request->username, request->discriminator, response == 0 ? "DISCORD_REPLY_NO" : "DISCORD_REPLY_YES");
     Discord_Respond(request->userId, DISCORD_REPLY_NO);
 }

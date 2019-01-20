@@ -3,7 +3,7 @@
 #include "ApplicationManager.h"
 #include <Windows.h>
 
-static ApplicationManager* appManager;
+ApplicationManager* appManagerInstance;
 
 static BOOL WINAPI ctrlHandler(DWORD dwCtrlType) {
     if (dwCtrlType != CTRL_CLOSE_EVENT &&
@@ -13,10 +13,10 @@ static BOOL WINAPI ctrlHandler(DWORD dwCtrlType) {
         dwCtrlType != CTRL_BREAK_EVENT) {
         return FALSE;
     }
-    if (!appManager) {
+    if (!appManagerInstance) {
         return FALSE;
     }
-    appManager->shutdown();
+    appManagerInstance->shutdown();
     return TRUE;
 }
 
@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
 #if defined(_DEBUG) && defined(_MSC_VER)
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-    std::cout << "DiscordRPConsole client [Version 1.1]" << std::endl;
+    std::cout << "DiscordRPConsole client [Version 1.2]" << std::endl;
     std::cout << "Control Discord Rich Presence easily from command line.\n" << std::endl;
     // Set handler for shutdown.
     if (!SetConsoleCtrlHandler(ctrlHandler, TRUE)) {
@@ -62,12 +62,12 @@ int main(int argc, char** argv) {
         return 1;
     }
     // Initialize.
-    std::cout << "Connecting to Discord with the applicationId of \"" << applicationId << "\".\nIf nothing happens check the spelling and make sure your Discord client is running." << std::endl;
+    std::cout << "Connecting to Discord with the applicationId of \"" << applicationId << "\".\nIf nothing happens check the spelling, and make sure your Discord client is running." << std::endl;
     std::cout << "\nUse \"HELP\" command to see a list of available commands." << std::endl;
     try {
-        ApplicationManager appManagerInstance;
-        ::appManager = &appManagerInstance;
-        appManagerInstance.runApplication(applicationId);
+        ApplicationManager appManager;
+        ::appManagerInstance = &appManager;
+        appManager.runApplication(applicationId);
         std::cout << "Bye." << std::endl;
     } catch (const std::exception& e) {
         std::cout << e.what() << std::endl;
