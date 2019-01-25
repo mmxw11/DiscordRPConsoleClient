@@ -6,11 +6,12 @@
 class ExitCommand : public ICommand {
 
 public:
-    ExitCommand(ApplicationManager* appManager) :
-        ICommand(appManager, "exit", "Exit the application.") {
+    ExitCommand() :
+        ICommand("exit", "Exit the application.") {
     }
 
     void executeCommand(std::string* args, unsigned argsLength) override {
-        appManager->shutdown();
+        extern ApplicationManager* appManagerInstance;
+        appManagerInstance->shutdown();
     }
 };

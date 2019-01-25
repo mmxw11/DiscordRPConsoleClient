@@ -6,12 +6,10 @@
 #include <memory>
 #include "ICommand.h"
 
-class ApplicationManager; // Forward declaration.
-
 class CommandManager {
 
 public:
-    CommandManager(ApplicationManager& appManager);
+    CommandManager() = default;
     CommandManager(const CommandManager&) = delete;
     CommandManager& operator=(const CommandManager&) = delete;
     void registerCommand(std::unique_ptr<ICommand> command);
@@ -20,7 +18,6 @@ public:
     const ICommand* getCommand(const std::string& commandName);
     const std::vector<std::string>& getCommandNames() const;
 private:
-    ApplicationManager& appManager;
     std::vector<std::string> commandNames;
     std::unordered_map<std::string, std::unique_ptr<ICommand>> commands;
 };

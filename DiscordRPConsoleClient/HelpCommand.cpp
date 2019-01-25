@@ -5,7 +5,8 @@
 #include "StringUtils.h"
 
 void HelpCommand::executeCommand(std::string* args, unsigned argsLength) {
-    CommandManager& commandManager = appManager->getCommandManager();
+    extern ApplicationManager* appManagerInstance;
+    CommandManager& commandManager = appManagerInstance->getCommandManager();
     if (argsLength > 0) {
         std::string& argCommandName = args[0];
         sutils::trim(argCommandName);

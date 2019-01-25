@@ -10,7 +10,6 @@ extern "C" void Discord_RunCallbacks();
 
 ApplicationManager::ApplicationManager() :
     running(false),
-    commandManager(*this),
     discordHandler(DiscordHandler::getInstance()) {
     commandManager.registerCommands();
 }

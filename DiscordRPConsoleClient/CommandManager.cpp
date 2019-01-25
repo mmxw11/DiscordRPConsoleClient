@@ -14,10 +14,6 @@
 #include "GameJoinInfoCommand.h"
 #include "SpectateInfoCommand.h"
 
-CommandManager::CommandManager(ApplicationManager& appManager) :
-    appManager(appManager) {
-}
-
 void CommandManager::registerCommand(std::unique_ptr<ICommand> command) {
     commandNames.emplace_back(command->getCommandName());
     commands.emplace(command->getCommandName(), std::move(command));
@@ -25,8 +21,8 @@ void CommandManager::registerCommand(std::unique_ptr<ICommand> command) {
 
 void CommandManager::registerCommands() {
     // Common commands.
-    registerCommand(std::make_unique<ExitCommand>(&appManager));
-    registerCommand(std::make_unique<HelpCommand>(&appManager));
+    registerCommand(std::make_unique<ExitCommand>());
+    registerCommand(std::make_unique<HelpCommand>());
     // Discord specific commands.
     registerCommand(std::make_unique<ReInitDiscordCommand>());
     registerCommand(std::make_unique<ClearPresenceCommand>());

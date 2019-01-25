@@ -3,13 +3,10 @@
 #include <string>
 #include <vector>
 
-class ApplicationManager; // Forward declaration.
-
 class ICommand {
 
 public:
     ICommand(std::string name, std::string description);
-    ICommand(ApplicationManager* appManager, std::string name, std::string description);
     ICommand(const ICommand&) = delete;
     ICommand& operator=(const ICommand&) = delete;
     virtual ~ICommand() = default;
@@ -25,7 +22,6 @@ public:
     int getRequiredArgumentsCount() const;
     const std::vector<CommandArgument>& getArguments() const;
 protected:
-    ApplicationManager* appManager;
     void addArgument(std::string arg, bool required);
 private:
     std::string name;

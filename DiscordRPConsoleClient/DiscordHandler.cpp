@@ -202,7 +202,7 @@ const std::atomic<DiscordHandler::State>& DiscordHandler::getHandlerState() cons
 
 void DiscordHandler::mangleDiscordSecret(std::string& secret) {
     char key[] = { "Super_secret_discord_key" };
-    for (int i = 0; i < secret.size(); i++) {
+    for (size_t i = 0; i < secret.size(); i++) {
         secret[i] = secret[i] ^ key[i % (sizeof(key) / sizeof(char))];
     }
 }

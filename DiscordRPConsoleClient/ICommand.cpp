@@ -5,11 +5,6 @@
 #include <algorithm>
 
 ICommand::ICommand(std::string name, std::string description) :
-    ICommand(nullptr, name, description) {
-}
-
-ICommand::ICommand(ApplicationManager* appManager, std::string name, std::string description) :
-    appManager(appManager),
     name(name),
     description(description) {
     sutils::toUpperCase(this->name);
